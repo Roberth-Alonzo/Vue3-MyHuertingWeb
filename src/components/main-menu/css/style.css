@@ -1,0 +1,233 @@
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap");
+
+.main-menu-wrapper {
+    font-family: "Josefin Sans", sans-serif;
+    background-image: url('/images/fondoM.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-size: large;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    background-color: rgba(50, 50, 50, 0.8);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 0 10px;
+    position: relative;
+    font-size: 20px;
+}
+
+header h1 {
+    margin: 0;
+    color: white;
+}
+
+/* Icono de logout */
+.icon-link {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logout-icon {
+    width: 32px;
+    height: 32px;
+    filter: brightness(0) saturate(100%) invert(100%); /* Hace el icono blanco */
+    transition: all 0.3s ease;
+}
+
+.icon-link:hover {
+    transform: translateY(-50%) scale(1.2) rotate(10deg);
+}
+
+.icon-link:hover .logout-icon {
+    filter: brightness(0) saturate(100%) invert(67%) sepia(71%) saturate(3370%) hue-rotate(95deg) brightness(88%) contrast(85%); /* Color verde #65e16b */
+}
+
+/* Contenido principal */
+.main-content {
+    padding: 40px 20px;
+    flex: 1;
+}
+
+.main-content h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2rem;
+    color: #ffffff;
+}
+
+/* Container de las tarjetas */
+.card-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Tarjetas individuales */
+.card {
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+    padding: 30px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+}
+
+.card h3 {
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    color: #65e16b;
+}
+
+.card p {
+    margin-bottom: 20px;
+    color: #ccc;
+    line-height: 1.4;
+}
+
+/* Botones */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+    background-color: #388e3c;
+    transform: scale(1.05);
+}
+
+/* Footer */
+footer {
+    background-color: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
+    color: #ffffff;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .card-container {
+        gap: 1.5rem;
+        padding: 0 10px;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 350px;
+        padding: 25px;
+    }
+
+    header {
+        height: 80px;
+        font-size: 18px;
+    }
+
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    .main-content h2 {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+    }
+
+    .logout-icon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .icon-link {
+        right: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content {
+        padding: 20px 10px;
+    }
+
+    .card-container {
+        gap: 1rem;
+    }
+
+    .card {
+        padding: 20px;
+        width: 100%;
+    }
+
+    .card h3 {
+        font-size: 1.3rem;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+
+    header {
+        height: 70px;
+        font-size: 16px;
+    }
+
+    header h1 {
+        font-size: 1.3rem;
+    }
+
+    .main-content h2 {
+        font-size: 1.6rem;
+    }
+
+    .logout-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .icon-link {
+        right: 10px;
+    }
+}
+
+/* Asegurar que la imagen de fondo se vea correctamente */
+@media (max-width: 480px) {
+    .main-menu-wrapper {
+        background-attachment: scroll; /* Mejor rendimiento en móviles */
+    }
+}
