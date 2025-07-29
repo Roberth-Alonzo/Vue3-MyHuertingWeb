@@ -43,7 +43,6 @@ export function validarFormulario() {
     const hora = document.getElementById('hora');
     const descripcion = document.getElementById('descripcion');
     const archivoInput = document.getElementById('archivo');
-    const archivo = archivoInput?.files[0];
 
     let valido = true;
     const hoy = new Date();
@@ -62,15 +61,7 @@ export function validarFormulario() {
         valido = false;
     }
 
-    if (fecha.value) {
-        const parts = fecha.value.split('-');
-        const fechaSeleccionada = new Date(parts[0], parts[1] - 1, parts[2]);
-        
-        if (fechaSeleccionada < hoy) {
-            mostrarError(fecha, 'La fecha no puede ser anterior al día de hoy.');
-            valido = false;
-        }
-    } else {
+    if (!fecha.value) {
         mostrarError(fecha, 'La fecha es obligatoria.');
         valido = false;
     }
@@ -86,18 +77,6 @@ export function validarFormulario() {
     } else if (descripcion.value.length > 300) {
         mostrarError(descripcion, 'La descripción no puede tener más de 300 caracteres.');
         valido = false;
-    }
-
-    if (archivo) {
-        if (archivo.type !== "application/pdf") {
-            mostrarError(archivoInput, 'Solo se permiten archivos en formato PDF.');
-            valido = false;
-        }
-        const maxSizeMB = 2;
-        if (archivo.size > maxSizeMB * 1024 * 1024) {
-            mostrarError(archivoInput, `El archivo no debe superar los ${maxSizeMB} MB.`);
-            valido = false;
-        }
     }
 
     return valido;
@@ -138,15 +117,6 @@ export function guardarTarea(e, navigationCallback) {
     document.getElementById('fecha').value = '';
     document.getElementById('hora').value = '';
     document.getElementById('descripcion').value = '';
-    const archivoInput = document.getElementById('archivo');
-    if (archivoInput) archivoInput.value = '';
-    
-    // Ejecutar callback de navegación si existe
-    if (navigationCallback) {
-        navigationCallback();
-    }
-    
-    return true;
 }
 
 // Obtener todas las tareas

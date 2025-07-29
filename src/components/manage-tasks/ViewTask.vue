@@ -15,7 +15,6 @@
                         <th>Fecha</th>
                         <th>Hora</th>
                         <th>Descripción</th>
-                        <th>Archivo</th>
                         <th>Asignado a</th>
                         <th>Estado</th>
                         <th>Acción</th>
@@ -32,12 +31,6 @@
                         <td>{{ tarea.fecha }}</td>
                         <td>{{ tarea.hora }}</td>
                         <td>{{ tarea.descripcion }}</td>
-                        <td>
-                            <a v-if="tarea.archivo" :href="tarea.archivo" target="_blank">
-                                Ver PDF
-                            </a>
-                            <span v-else>No adjunto</span>
-                        </td>
                         <td>{{ tarea.miembro || 'Sin asignar' }}</td>
                         <td :class="{
                             'estado-realizada': tarea.estado === 'Realizada',
