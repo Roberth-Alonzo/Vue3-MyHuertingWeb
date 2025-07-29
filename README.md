@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # MyHuertingWeb
 
 This template should help get you started developing with Vue 3 in Vite.
@@ -27,3 +28,7 @@ npm run dev
 ```sh
 npm run build
 ```
+=======
+# Vue3-MyHuertingWeb
+Sistema de Gestión de Huertos Urbanos Comunitarios, creado mediante Vue3
+>>>>>>> 9dfb25d1882d3467c39321a6d30b5c40a4658188
