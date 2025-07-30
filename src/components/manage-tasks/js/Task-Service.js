@@ -206,6 +206,129 @@ function mostrarModalEliminacion(mensaje, onConfirmar) {
     document.body.appendChild(modal);
 }
 
+// NUEVA: Función para mostrar modal después de eliminar tarea
+function mostrarModalPostEliminacion(onAgregarNueva) {
+    // Crear el modal de confirmación
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        font-family: 'Josefin Sans', sans-serif;
+    `;
+
+    const modalContent = document.createElement('div');
+    modalContent.style.cssText = `
+        background: rgba(50, 50, 50, 0.95);
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        color: white;
+        max-width: 400px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+    `;
+
+    const titulo = document.createElement('h3');
+    titulo.textContent = '✅ ¡Tarea eliminada!';
+    titulo.style.cssText = `
+        margin: 0 0 15px 0;
+        color: #66bb6a;
+        font-size: 24px;
+    `;
+
+    const texto = document.createElement('p');
+    texto.textContent = 'La tarea ha sido eliminada correctamente.';
+    texto.style.cssText = `
+        margin: 0 0 25px 0;
+        font-size: 16px;
+        line-height: 1.4;
+    `;
+
+    const pregunta = document.createElement('p');
+    pregunta.textContent = '¿Deseas agregar una nueva tarea?';
+    pregunta.style.cssText = `
+        margin: 0 0 25px 0;
+        font-size: 14px;
+        color: #ccc;
+    `;
+
+    const botones = document.createElement('div');
+    botones.style.cssText = `
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    `;
+
+    const btnAgregar = document.createElement('button');
+    btnAgregar.textContent = 'Sí, agregar tarea';
+    btnAgregar.style.cssText = `
+        padding: 10px 20px;
+        background: #66bb6a;
+        color: black;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        transition: background 0.3s;
+    `;
+
+    const btnQuedar = document.createElement('button');
+    btnQuedar.textContent = 'Quedarme aquí';
+    btnQuedar.style.cssText = `
+        padding: 10px 20px;
+        background: transparent;
+        color: #ccc;
+        border: 1px solid #666;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s;
+    `;
+
+    // Efectos hover
+    btnAgregar.onmouseover = () => btnAgregar.style.background = '#4caf50';
+    btnAgregar.onmouseout = () => btnAgregar.style.background = '#66bb6a';
+    
+    btnQuedar.onmouseover = () => {
+        btnQuedar.style.background = 'rgba(255,255,255,0.1)';
+        btnQuedar.style.color = 'white';
+    };
+    btnQuedar.onmouseout = () => {
+        btnQuedar.style.background = 'transparent';
+        btnQuedar.style.color = '#ccc';
+    };
+
+    // Event listeners
+    btnAgregar.onclick = () => {
+        document.body.removeChild(modal);
+        onAgregarNueva();
+    };
+
+    btnQuedar.onclick = () => {
+        document.body.removeChild(modal);
+    };
+
+    // Construir modal
+    botones.appendChild(btnAgregar);
+    botones.appendChild(btnQuedar);
+    modalContent.appendChild(titulo);
+    modalContent.appendChild(texto);
+    modalContent.appendChild(pregunta);
+    modalContent.appendChild(botones);
+    modal.appendChild(modalContent);
+    
+    document.body.appendChild(modal);
+}
+
 // Función para mostrar diálogo de confirmación personalizado con opción de redirección
 function mostrarConfirmacionConRedireccion(mensaje, onAceptar) {
     // Crear el modal de confirmación
@@ -476,13 +599,10 @@ export function useListaTareas() {
                 if (eliminarTarea(index)) {
                     cargarTareas()
                     
-                    // Mostrar modal de éxito después de eliminar
-                    mostrarConfirmacionConRedireccion(
-                        '¡Tarea eliminada correctamente!',
-                        () => {
-                            router.push('/main-menu')
-                        }
-                    )
+                    // MODIFICADO: Mostrar modal personalizado para después de eliminar
+                    mostrarModalPostEliminacion(() => {
+                        router.push('/add-task')  // Ir a agregar nueva tarea
+                    })
                 }
             }
         )

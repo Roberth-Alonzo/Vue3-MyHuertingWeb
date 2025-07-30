@@ -416,10 +416,10 @@ export function useVerCultivos() {
         mostrarModalConfirmacion(
             '¡Cultivo eliminado correctamente!',
             () => {
-                router.push('/main-menu')
+                router.push('/add-crop')
             },
-            'Ir al menú principal',
-            '¿Deseas ir al menú principal?'
+            'Agregar nuevo cultivo',
+            '¿Deseas agregar un nuevo cultivo?'
         )
     }
     
