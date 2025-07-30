@@ -6,7 +6,7 @@
             </router-link>
             <h1>📋 Tareas Programadas</h1>
         </header>
-
+        
         <section class="form-container">
             <table id="tabla-tareas">
                 <thead>
@@ -22,24 +22,26 @@
                 </thead>
                 <tbody>
                     <tr v-if="tareas.length === 0">
-                        <td colspan="8" style="text-align:center;">
+                        <td colspan="7" class="no-tasks-message">
                             No hay tareas programadas.
+                            <a href="#" @click.prevent="irAgregarTarea" class="add-first-task-link">
+                                Agregar primera tarea
+                            </a>
                         </td>
                     </tr>
-                    <tr v-else v-for="(tarea, index) in tareas" :key="index">
+                    <tr v-for="(tarea, index) in tareas" :key="index">
                         <td>{{ tarea.titulo }}</td>
-                        <td>{{ tarea.fecha }}</td>
+                        <td>{{ formatearFecha(tarea.fecha) }}</td>
                         <td>{{ tarea.hora }}</td>
                         <td>{{ tarea.descripcion }}</td>
-                        <td>{{ tarea.miembro || 'Sin asignar' }}</td>
-                        <td :class="{
-                            'estado-realizada': tarea.estado === 'Realizada',
-                            'estado-pendiente': tarea.estado !== 'Realizada'
-                        }">
-                            {{ tarea.estado }}
+                        <td>{{ tarea.miembro }}</td>
+                        <td>
+                            <span :class="tarea.estado === 'Realizada' ? 'estado-realizada' : 'estado-pendiente'">
+                                {{ tarea.estado }}
+                            </span>
                         </td>
                         <td>
-                            <button class="btn-eliminar" @click="onEliminarTarea(index)">
+                            <button @click="onEliminarTarea(index)" class="btn-eliminar">
                                 Eliminar
                             </button>
                         </td>
@@ -54,9 +56,22 @@
 import { useListaTareas } from './js/Task-Service.js'
 
 export default {
-    name: 'ListaTareas',
+    name: 'ViewTask',
     setup() {
-        return useListaTareas()
+        const { tareas, onEliminarTarea, irAgregarTarea } = useListaTareas()
+        
+        const formatearFecha = (fecha) => {
+            if (!fecha) return ''
+            const date = new Date(fecha)
+            return date.toLocaleDateString('es-ES')
+        }
+
+        return {
+            tareas,
+            onEliminarTarea,
+            irAgregarTarea,
+            formatearFecha
+        }
     }
 }
 </script>
