@@ -31,7 +31,7 @@
                 <div class="card">
                     <h3>Plantas registradas</h3>
                     <p>Permite visualizar una lista de las plantas disponibles.</p>
-                    <router-link to="/plantas" class="btn">Acceder</router-link>
+                    <router-link to="/Registered-Plants" class="btn">Acceder</router-link>
                 </div>
 
                 <div class="card">
