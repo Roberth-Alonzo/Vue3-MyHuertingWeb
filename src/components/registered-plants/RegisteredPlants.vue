@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="registered-plants-wrapper">
     <header class="header">
       <router-link to="/main-menu" class="logo-link">
-        <img src="/images/arrow.svg" alt="Back" />
+         <img src="/images/arrowM.svg" alt="Volver">
       </router-link>
-      <h1>🌱 Planas Registradas </h1>
+      <h1>🌱 Plantas Registradas </h1>
     </header>
     <section id="form-container">
       <div id="plant-list" class="plantas-grid">
