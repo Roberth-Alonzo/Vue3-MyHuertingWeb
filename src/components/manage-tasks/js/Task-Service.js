@@ -43,7 +43,6 @@ export function validarFormulario() {
     const hora = document.getElementById('hora');
     const descripcion = document.getElementById('descripcion');
     const archivoInput = document.getElementById('archivo');
-    const archivo = archivoInput?.files[0];
 
     let valido = true;
     const hoy = new Date();
@@ -62,15 +61,7 @@ export function validarFormulario() {
         valido = false;
     }
 
-    if (fecha.value) {
-        const parts = fecha.value.split('-');
-        const fechaSeleccionada = new Date(parts[0], parts[1] - 1, parts[2]);
-        
-        if (fechaSeleccionada < hoy) {
-            mostrarError(fecha, 'La fecha no puede ser anterior al día de hoy.');
-            valido = false;
-        }
-    } else {
+    if (!fecha.value) {
         mostrarError(fecha, 'La fecha es obligatoria.');
         valido = false;
     }
@@ -88,22 +79,257 @@ export function validarFormulario() {
         valido = false;
     }
 
-    if (archivo) {
-        if (archivo.type !== "application/pdf") {
-            mostrarError(archivoInput, 'Solo se permiten archivos en formato PDF.');
-            valido = false;
-        }
-        const maxSizeMB = 2;
-        if (archivo.size > maxSizeMB * 1024 * 1024) {
-            mostrarError(archivoInput, `El archivo no debe superar los ${maxSizeMB} MB.`);
-            valido = false;
-        }
-    }
-
     return valido;
 }
 
-// Guardar nueva tarea con validaciones y callback de navegación
+// Función para mostrar modal de confirmación de eliminación
+function mostrarModalEliminacion(mensaje, onConfirmar) {
+    // Crear el modal de confirmación
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        font-family: 'Josefin Sans', sans-serif;
+    `;
+
+    const modalContent = document.createElement('div');
+    modalContent.style.cssText = `
+        background: rgba(50, 50, 50, 0.95);
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        color: white;
+        max-width: 400px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+    `;
+
+    const titulo = document.createElement('h3');
+    titulo.textContent = '⚠️ Confirmar eliminación';
+    titulo.style.cssText = `
+        margin: 0 0 15px 0;
+        color: #ff6b6b;
+        font-size: 24px;
+    `;
+
+    const texto = document.createElement('p');
+    texto.textContent = mensaje;
+    texto.style.cssText = `
+        margin: 0 0 25px 0;
+        font-size: 16px;
+        line-height: 1.4;
+    `;
+
+    const advertencia = document.createElement('p');
+    advertencia.textContent = 'Esta acción no se puede deshacer';
+    advertencia.style.cssText = `
+        margin: 0 0 25px 0;
+        font-size: 14px;
+        color: #ffab91;
+        font-style: italic;
+    `;
+
+    const botones = document.createElement('div');
+    botones.style.cssText = `
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    `;
+
+    const btnEliminar = document.createElement('button');
+    btnEliminar.textContent = 'Sí, eliminar';
+    btnEliminar.style.cssText = `
+        padding: 10px 20px;
+        background: #e57373;
+        color: black;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        transition: background 0.3s;
+    `;
+
+    const btnCancelar = document.createElement('button');
+    btnCancelar.textContent = 'Cancelar';
+    btnCancelar.style.cssText = `
+        padding: 10px 20px;
+        background: transparent;
+        color: #ccc;
+        border: 1px solid #666;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s;
+    `;
+
+    // Efectos hover
+    btnEliminar.onmouseover = () => btnEliminar.style.background = '#c62828';
+    btnEliminar.onmouseout = () => btnEliminar.style.background = '#e57373';
+    
+    btnCancelar.onmouseover = () => {
+        btnCancelar.style.background = 'rgba(255,255,255,0.1)';
+        btnCancelar.style.color = 'white';
+    };
+    btnCancelar.onmouseout = () => {
+        btnCancelar.style.background = 'transparent';
+        btnCancelar.style.color = '#ccc';
+    };
+
+    // Event listeners
+    btnEliminar.onclick = () => {
+        document.body.removeChild(modal);
+        onConfirmar();
+    };
+
+    btnCancelar.onclick = () => {
+        document.body.removeChild(modal);
+    };
+
+    // Construir modal
+    botones.appendChild(btnEliminar);
+    botones.appendChild(btnCancelar);
+    modalContent.appendChild(titulo);
+    modalContent.appendChild(texto);
+    modalContent.appendChild(advertencia);
+    modalContent.appendChild(botones);
+    modal.appendChild(modalContent);
+    
+    document.body.appendChild(modal);
+}
+
+// Función para mostrar diálogo de confirmación personalizado con opción de redirección
+function mostrarConfirmacionConRedireccion(mensaje, onAceptar) {
+    // Crear el modal de confirmación
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        font-family: 'Josefin Sans', sans-serif;
+    `;
+
+    const modalContent = document.createElement('div');
+    modalContent.style.cssText = `
+        background: rgba(50, 50, 50, 0.95);
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        color: white;
+        max-width: 400px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+    `;
+
+    const titulo = document.createElement('h3');
+    titulo.textContent = '✅ ¡Éxito!';
+    titulo.style.cssText = `
+        margin: 0 0 15px 0;
+        color: #66bb6a;
+        font-size: 24px;
+    `;
+
+    const texto = document.createElement('p');
+    texto.textContent = mensaje;
+    texto.style.cssText = `
+        margin: 0 0 25px 0;
+        font-size: 16px;
+        line-height: 1.4;
+    `;
+
+    const pregunta = document.createElement('p');
+    pregunta.textContent = '¿Deseas ir a la lista de tareas?';
+    pregunta.style.cssText = `
+        margin: 0 0 25px 0;
+        font-size: 14px;
+        color: #ccc;
+    `;
+
+    const botones = document.createElement('div');
+    botones.style.cssText = `
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    `;
+
+    const btnAceptar = document.createElement('button');
+    btnAceptar.textContent = 'Sí, ir a lista';
+    btnAceptar.style.cssText = `
+        padding: 10px 20px;
+        background: #66bb6a;
+        color: black;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        transition: background 0.3s;
+    `;
+
+    const btnCancelar = document.createElement('button');
+    btnCancelar.textContent = 'Quedarme aquí';
+    btnCancelar.style.cssText = `
+        padding: 10px 20px;
+        background: transparent;
+        color: #ccc;
+        border: 1px solid #666;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s;
+    `;
+
+    // Efectos hover
+    btnAceptar.onmouseover = () => btnAceptar.style.background = '#4caf50';
+    btnAceptar.onmouseout = () => btnAceptar.style.background = '#66bb6a';
+    
+    btnCancelar.onmouseover = () => {
+        btnCancelar.style.background = 'rgba(255,255,255,0.1)';
+        btnCancelar.style.color = 'white';
+    };
+    btnCancelar.onmouseout = () => {
+        btnCancelar.style.background = 'transparent';
+        btnCancelar.style.color = '#ccc';
+    };
+
+    // Event listeners
+    btnAceptar.onclick = () => {
+        document.body.removeChild(modal);
+        onAceptar();
+    };
+
+    btnCancelar.onclick = () => {
+        document.body.removeChild(modal);
+    };
+
+    // Construir modal
+    botones.appendChild(btnAceptar);
+    botones.appendChild(btnCancelar);
+    modalContent.appendChild(titulo);
+    modalContent.appendChild(texto);
+    modalContent.appendChild(pregunta);
+    modalContent.appendChild(botones);
+    modal.appendChild(modalContent);
+    
+    document.body.appendChild(modal);
+}
+
+// Guardar nueva tarea con validaciones y callback de navegación ACTUALIZADA
 export function guardarTarea(e, navigationCallback) {
     e.preventDefault();
 
@@ -130,7 +356,11 @@ export function guardarTarea(e, navigationCallback) {
     tareas.push(tarea);
     localStorage.setItem("tareas", JSON.stringify(tareas));
 
-    alert("¡Tarea programada exitosamente!");
+    // Mostrar confirmación personalizada con opción de redirección
+    mostrarConfirmacionConRedireccion(
+        "¡Tarea programada exitosamente!",
+        navigationCallback
+    );
     
     // Limpiar formulario
     document.getElementById('titulo').value = '';
@@ -138,13 +368,6 @@ export function guardarTarea(e, navigationCallback) {
     document.getElementById('fecha').value = '';
     document.getElementById('hora').value = '';
     document.getElementById('descripcion').value = '';
-    const archivoInput = document.getElementById('archivo');
-    if (archivoInput) archivoInput.value = '';
-    
-    // Ejecutar callback de navegación si existe
-    if (navigationCallback) {
-        navigationCallback();
-    }
     
     return true;
 }
@@ -154,9 +377,8 @@ export function obtenerTareas() {
     return JSON.parse(localStorage.getItem("tareas")) || [];
 }
 
-// Eliminar tarea por índice
+// Eliminar tarea por índice ACTUALIZADA
 export function eliminarTarea(index) {
-    if (!confirm("¿Deseas eliminar esta tarea?")) return false;
     const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
     tareas.splice(index, 1);
     localStorage.setItem("tareas", JSON.stringify(tareas));
@@ -204,7 +426,7 @@ export function handleFileChange(event) {
 
 // ================= COMPOSABLES PARA VUE =================
 
-// Composable para ProgramarTarea
+// Composable para ProgramarTarea ACTUALIZADO
 export function useProgramarTarea() {
     const router = useRouter()
     const usuarios = ref([])
@@ -232,8 +454,9 @@ export function useProgramarTarea() {
     }
 }
 
-// Composable para ListaTareas  
+// Composable para ListaTareas ACTUALIZADO
 export function useListaTareas() {
+    const router = useRouter()
     const tareas = ref([])
 
     const cargarTareas = () => {
@@ -247,9 +470,27 @@ export function useListaTareas() {
     }
 
     const onEliminarTarea = (index) => {
-        if (eliminarTarea(index)) {
-            cargarTareas()
-        }
+        mostrarModalEliminacion(
+            '¿Estás seguro de que deseas eliminar esta tarea?',
+            () => {
+                if (eliminarTarea(index)) {
+                    cargarTareas()
+                    
+                    // Mostrar modal de éxito después de eliminar
+                    mostrarConfirmacionConRedireccion(
+                        '¡Tarea eliminada correctamente!',
+                        () => {
+                            router.push('/main-menu')
+                        }
+                    )
+                }
+            }
+        )
+    }
+
+    // NUEVA: Función para ir a agregar tarea
+    const irAgregarTarea = () => {
+        router.push('/add-task')
     }
 
     onMounted(() => {
@@ -259,7 +500,8 @@ export function useListaTareas() {
     return {
         tareas,
         onEliminarTarea,
-        cargarTareas
+        cargarTareas,
+        irAgregarTarea  // Exportar la nueva función
     }
 }
 

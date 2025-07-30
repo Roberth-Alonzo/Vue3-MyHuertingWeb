@@ -1,6 +1,182 @@
 import { ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
 
+// Función para mostrar modal de confirmación personalizado
+function mostrarModalConfirmacion(mensaje, onIrLogin, textoPregunta = '¿Deseas ir al inicio de sesión?') {
+    // Crear el modal de confirmación
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        font-family: 'Josefin Sans', sans-serif;
+    `;
+
+    const modalContent = document.createElement('div');
+    modalContent.style.cssText = `
+        background: rgba(50, 50, 50, 0.95);
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        color: white;
+        max-width: 400px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+        animation: modalFadeIn 0.3s ease-out;
+    `;
+
+    // Agregar keyframes para la animación
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    const titulo = document.createElement('h3');
+    titulo.textContent = '🎉 ¡Registro exitoso!';
+    titulo.style.cssText = `
+        margin: 0 0 15px 0;
+        color: #66bb6a;
+        font-size: 24px;
+        font-weight: bold;
+    `;
+
+    const texto = document.createElement('p');
+    texto.textContent = mensaje;
+    texto.style.cssText = `
+        margin: 0 0 20px 0;
+        font-size: 16px;
+        line-height: 1.5;
+        color: #e8e8e8;
+    `;
+
+    const pregunta = document.createElement('p');
+    pregunta.textContent = textoPregunta;
+    pregunta.style.cssText = `
+        margin: 0 0 25px 0;
+        font-size: 14px;
+        color: #ccc;
+        font-style: italic;
+    `;
+
+    const botones = document.createElement('div');
+    botones.style.cssText = `
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+    `;
+
+    const btnIrLogin = document.createElement('button');
+    btnIrLogin.textContent = '✓ Sí, ir al login';
+    btnIrLogin.style.cssText = `
+        padding: 12px 24px;
+        background: #66bb6a;
+        color: #000;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        min-width: 140px;
+    `;
+
+    const btnQuedarme = document.createElement('button');
+    btnQuedarme.textContent = 'Quedarme aquí';
+    btnQuedarme.style.cssText = `
+        padding: 12px 24px;
+        background: transparent;
+        color: #ccc;
+        border: 1px solid #666;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        min-width: 140px;
+    `;
+
+    // Efectos hover
+    btnIrLogin.onmouseover = () => {
+        btnIrLogin.style.background = '#4caf50';
+        btnIrLogin.style.transform = 'translateY(-2px)';
+        btnIrLogin.style.boxShadow = '0 4px 12px rgba(102, 187, 106, 0.4)';
+    };
+    btnIrLogin.onmouseout = () => {
+        btnIrLogin.style.background = '#66bb6a';
+        btnIrLogin.style.transform = 'translateY(0)';
+        btnIrLogin.style.boxShadow = 'none';
+    };
+    
+    btnQuedarme.onmouseover = () => {
+        btnQuedarme.style.background = 'rgba(255,255,255,0.1)';
+        btnQuedarme.style.color = 'white';
+        btnQuedarme.style.borderColor = '#999';
+        btnQuedarme.style.transform = 'translateY(-2px)';
+    };
+    btnQuedarme.onmouseout = () => {
+        btnQuedarme.style.background = 'transparent';
+        btnQuedarme.style.color = '#ccc';
+        btnQuedarme.style.borderColor = '#666';
+        btnQuedarme.style.transform = 'translateY(0)';
+    };
+
+    // Event listeners
+    btnIrLogin.onclick = () => {
+        modalContent.style.animation = 'modalFadeIn 0.2s ease-in reverse';
+        setTimeout(() => {
+            document.body.removeChild(modal);
+            document.head.removeChild(style);
+            onIrLogin();
+        }, 200);
+    };
+
+    btnQuedarme.onclick = () => {
+        modalContent.style.animation = 'modalFadeIn 0.2s ease-in reverse';
+        setTimeout(() => {
+            document.body.removeChild(modal);
+            document.head.removeChild(style);
+        }, 200);
+    };
+
+    // Cerrar con ESC
+    const cerrarConEsc = (e) => {
+        if (e.key === 'Escape') {
+            document.body.removeChild(modal);
+            document.head.removeChild(style);
+            document.removeEventListener('keydown', cerrarConEsc);
+        }
+    };
+    document.addEventListener('keydown', cerrarConEsc);
+
+    // Construir modal
+    botones.appendChild(btnIrLogin);
+    botones.appendChild(btnQuedarme);
+    modalContent.appendChild(titulo);
+    modalContent.appendChild(texto);
+    modalContent.appendChild(pregunta);
+    modalContent.appendChild(botones);
+    modal.appendChild(modalContent);
+    
+    document.body.appendChild(modal);
+}
+
 export function useSignUpValidations() {
   const router = useRouter();
   
@@ -243,7 +419,7 @@ export function useSignUpValidations() {
     }
   };
 
-  // Submit handler
+  // Submit handler ACTUALIZADO CON MODAL
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log("Formulario enviado");
@@ -289,9 +465,15 @@ export function useSignUpValidations() {
       usuariosRegistrados.push(nuevoUsuario);
       localStorage.setItem("usuariosRegistrados", JSON.stringify(usuariosRegistrados));
       
-      // CORREGIDO: No sobrescribir userData aquí, solo guardarlo si es necesario
-      // userData debería establecerse solo en el login exitoso
-      localStorage.setItem("userData", JSON.stringify(nuevoUsuario));
+      // Guardar fecha de creación para el menú de usuario
+      localStorage.setItem("userCreatedAt", nuevoUsuario.fechaRegistro);
+      
+      // Guardar datos del usuario para el menú desplegable
+      const userInfo = {
+        name: nuevoUsuario.nombre,
+        email: nuevoUsuario.email
+      };
+      localStorage.setItem("userInfo", JSON.stringify(userInfo));
 
       console.log("Usuario registrado:", nuevoUsuario);
 
@@ -313,12 +495,13 @@ export function useSignUpValidations() {
       // Limpiar errores
       clearAllErrors();
 
-      // Mostrar mensaje de éxito y redirigir
-      console.log("Registro Exitoso....................");
-      alert("¡Registro exitoso! Serás redirigido al login.");
-      
-      // Redirigir después de que el usuario haga click en "Aceptar"
-      router.push("/log-in");
+      // MOSTRAR MODAL EN LUGAR DE ALERT
+      mostrarModalConfirmacion(
+        '¡Tu cuenta ha sido creada correctamente! Ya puedes iniciar sesión con tus credenciales.',
+        () => {
+          router.push("/log-in");
+        }
+      );
     } else {
       console.log("Formulario inválido");
     }

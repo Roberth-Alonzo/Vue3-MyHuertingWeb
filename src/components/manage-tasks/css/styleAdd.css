@@ -80,12 +80,13 @@ input[type="date"],
 input[type="time"],
 textarea {
     padding: 10px;
-    border: none;
-    border-radius: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
     font-size: 16px;
-    background-color: rgba(255, 255, 255, 0.9);
-    color: #333;
-    height: 1.5em;
+    resize: none; 
+    height: 40px; 
+    overflow-y: auto; 
+    margin-bottom: 5px;
 }
 
 textarea {
@@ -174,4 +175,3 @@ button {
     font-size: 1em;
     margin-top: 4px;
 }
-

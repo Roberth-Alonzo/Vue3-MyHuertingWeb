@@ -1,6 +1,253 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
+// Función para mostrar modal de confirmación personalizado
+function mostrarModalConfirmacion(mensaje, onAceptar, textoBotonPrincipal = 'Sí, ir a lista', textoPregunta = '¿Deseas ir a la lista de cultivos?') {
+    // Crear el modal de confirmación
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        font-family: 'Josefin Sans', sans-serif;
+    `;
+
+    const modalContent = document.createElement('div');
+    modalContent.style.cssText = `
+        background: rgba(50, 50, 50, 0.95);
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        color: white;
+        max-width: 400px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+    `;
+
+    const titulo = document.createElement('h3');
+    titulo.textContent = '✅ ¡Éxito!';
+    titulo.style.cssText = `
+        margin: 0 0 15px 0;
+        color: #66bb6a;
+        font-size: 24px;
+    `;
+
+    const texto = document.createElement('p');
+    texto.textContent = mensaje;
+    texto.style.cssText = `
+        margin: 0 0 25px 0;
+        font-size: 16px;
+        line-height: 1.4;
+    `;
+
+    const pregunta = document.createElement('p');
+    pregunta.textContent = textoPregunta;
+    pregunta.style.cssText = `
+        margin: 0 0 25px 0;
+        font-size: 14px;
+        color: #ccc;
+    `;
+
+    const botones = document.createElement('div');
+    botones.style.cssText = `
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    `;
+
+    const btnAceptar = document.createElement('button');
+    btnAceptar.textContent = textoBotonPrincipal;
+    btnAceptar.style.cssText = `
+        padding: 10px 20px;
+        background: #66bb6a;
+        color: black;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        transition: background 0.3s;
+    `;
+
+    const btnCancelar = document.createElement('button');
+    btnCancelar.textContent = 'Quedarme aquí';
+    btnCancelar.style.cssText = `
+        padding: 10px 20px;
+        background: transparent;
+        color: #ccc;
+        border: 1px solid #666;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s;
+    `;
+
+    // Efectos hover
+    btnAceptar.onmouseover = () => btnAceptar.style.background = '#4caf50';
+    btnAceptar.onmouseout = () => btnAceptar.style.background = '#66bb6a';
+    
+    btnCancelar.onmouseover = () => {
+        btnCancelar.style.background = 'rgba(255,255,255,0.1)';
+        btnCancelar.style.color = 'white';
+    };
+    btnCancelar.onmouseout = () => {
+        btnCancelar.style.background = 'transparent';
+        btnCancelar.style.color = '#ccc';
+    };
+
+    // Event listeners
+    btnAceptar.onclick = () => {
+        document.body.removeChild(modal);
+        onAceptar();
+    };
+
+    btnCancelar.onclick = () => {
+        document.body.removeChild(modal);
+    };
+
+    // Construir modal
+    botones.appendChild(btnAceptar);
+    botones.appendChild(btnCancelar);
+    modalContent.appendChild(titulo);
+    modalContent.appendChild(texto);
+    modalContent.appendChild(pregunta);
+    modalContent.appendChild(botones);
+    modal.appendChild(modalContent);
+    
+    document.body.appendChild(modal);
+}
+
+// Función para mostrar modal de confirmación de eliminación
+function mostrarModalEliminacion(mensaje, onConfirmar) {
+    // Crear el modal de confirmación
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        font-family: 'Josefin Sans', sans-serif;
+    `;
+
+    const modalContent = document.createElement('div');
+    modalContent.style.cssText = `
+        background: rgba(50, 50, 50, 0.95);
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        color: white;
+        max-width: 400px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+    `;
+
+    const titulo = document.createElement('h3');
+    titulo.textContent = '⚠️ Confirmar eliminación';
+    titulo.style.cssText = `
+        margin: 0 0 15px 0;
+        color: #ff6b6b;
+        font-size: 24px;
+    `;
+
+    const texto = document.createElement('p');
+    texto.textContent = mensaje;
+    texto.style.cssText = `
+        margin: 0 0 25px 0;
+        font-size: 16px;
+        line-height: 1.4;
+    `;
+
+    const advertencia = document.createElement('p');
+    advertencia.textContent = 'Los usuarios no podrán tener acceso a este cultivo';
+    advertencia.style.cssText = `
+        margin: 0 0 25px 0;
+        font-size: 14px;
+        color: #ffab91;
+        font-style: italic;
+    `;
+
+    const botones = document.createElement('div');
+    botones.style.cssText = `
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    `;
+
+    const btnEliminar = document.createElement('button');
+    btnEliminar.textContent = 'Sí, eliminar';
+    btnEliminar.style.cssText = `
+        padding: 10px 20px;
+        background: #e57373;
+        color: black;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        transition: background 0.3s;
+    `;
+
+    const btnCancelar = document.createElement('button');
+    btnCancelar.textContent = 'Cancelar';
+    btnCancelar.style.cssText = `
+        padding: 10px 20px;
+        background: transparent;
+        color: #ccc;
+        border: 1px solid #666;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s;
+    `;
+
+    // Efectos hover
+    btnEliminar.onmouseover = () => btnEliminar.style.background = '#c62828';
+    btnEliminar.onmouseout = () => btnEliminar.style.background = '#e57373';
+    
+    btnCancelar.onmouseover = () => {
+        btnCancelar.style.background = 'rgba(255,255,255,0.1)';
+        btnCancelar.style.color = 'white';
+    };
+    btnCancelar.onmouseout = () => {
+        btnCancelar.style.background = 'transparent';
+        btnCancelar.style.color = '#ccc';
+    };
+
+    // Event listeners
+    btnEliminar.onclick = () => {
+        document.body.removeChild(modal);
+        onConfirmar();
+    };
+
+    btnCancelar.onclick = () => {
+        document.body.removeChild(modal);
+    };
+
+    // Construir modal
+    botones.appendChild(btnEliminar);
+    botones.appendChild(btnCancelar);
+    modalContent.appendChild(titulo);
+    modalContent.appendChild(texto);
+    modalContent.appendChild(advertencia);
+    modalContent.appendChild(botones);
+    modal.appendChild(modalContent);
+    
+    document.body.appendChild(modal);
+}
+
 // Composable para registrar cultivos (AddCrop.vue)
 export function useRegistrarCultivos() {
     const router = useRouter()
@@ -109,7 +356,7 @@ export function useRegistrarCultivos() {
         console.log('Formulario reseteado') // Para debug
     }
     
-    // Manejador del submit del formulario
+    // Manejador del submit del formulario ACTUALIZADO
     const handleSubmit = (e) => {
         e.preventDefault()
         
@@ -119,9 +366,13 @@ export function useRegistrarCultivos() {
             guardarCultivo()
             resetearFormulario()
             
-            alert('✅ Cultivo agregado correctamente.')
-            // Navegar a la vista de cultivos
-            router.push('/view-crop')
+            // Mostrar modal elegante en lugar de alert
+            mostrarModalConfirmacion(
+                '¡Cultivo agregado correctamente!',
+                () => {
+                    router.push('/view-crop')
+                }
+            )
         }
     }
     
@@ -152,7 +403,7 @@ export function useVerCultivos() {
         cultivos.value = cultivosGuardados
     }
     
-    // Función para eliminar un cultivo
+    // Función para eliminar un cultivo ACTUALIZADA
     const eliminarCultivo = (index) => {
         let cultivosActuales = JSON.parse(localStorage.getItem('cultivos')) || []
         cultivosActuales.splice(index, 1)
@@ -160,15 +411,31 @@ export function useVerCultivos() {
         
         // Recargar la lista
         cargarCultivos()
-        alert("✅ Cultivo eliminado correctamente.")
+        
+        // Mostrar modal de confirmación de eliminación exitosa
+        mostrarModalConfirmacion(
+            '¡Cultivo eliminado correctamente!',
+            () => {
+                router.push('/main-menu')
+            },
+            'Ir al menú principal',
+            '¿Deseas ir al menú principal?'
+        )
     }
     
-    // Función para confirmar eliminación
+    // Función para confirmar eliminación ACTUALIZADA
     const confirmarEliminacion = (index) => {
-        const confirmar = confirm("¿Estás seguro de que deseas eliminar este cultivo? Los usuarios no podrán tener acceso a este")
-        if (confirmar) {
-            eliminarCultivo(index)
-        }
+        mostrarModalEliminacion(
+            '¿Estás seguro de que deseas eliminar este cultivo?',
+            () => {
+                eliminarCultivo(index)
+            }
+        )
+    }
+    
+    // NUEVA: Función para ir a agregar cultivo
+    const irAgregarCultivo = () => {
+        router.push('/add-crop')
     }
     
     // Cargar cultivos al montar el componente
@@ -180,7 +447,8 @@ export function useVerCultivos() {
         cultivos,
         cargarCultivos,
         eliminarCultivo,
-        confirmarEliminacion
+        confirmarEliminacion,
+        irAgregarCultivo  // Exportar la nueva función para el enlace "Agregar primer cultivo"
     }
 }
 
