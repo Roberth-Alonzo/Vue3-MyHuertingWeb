@@ -148,7 +148,7 @@
                             <h3>Guías</h3>
                             <p>Videos instructivos</p>
                         </router-link>
-                        <router-link to="/plantas" class="action-card">
+                        <router-link to="/Registered-Plants" class="action-card">
                             <div class="action-icon">🍃</div>
                             <h3>Plantas</h3>
                             <p>Catálogo de plantas</p>
