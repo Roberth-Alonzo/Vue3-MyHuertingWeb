@@ -8,7 +8,7 @@ export function useLoginLogic() {
   const errorMessage = ref("");
 
   const onSubmit = () => {
-    // CORREGIDO: Buscar en la lista completa de usuarios registrados
+    // Buscar en la lista completa de usuarios registrados
     const usuariosRegistrados = JSON.parse(localStorage.getItem("usuariosRegistrados") || "[]");
     
     console.log("Intentando login con:", { email: email.value, password: password.value });
@@ -37,18 +37,5 @@ export function useLoginLogic() {
     }
   };
 
-  // Para la vista de la contraseña (opcional, si tienes el icono en el template)
-  const vista = () => {
-    const passwordInput = document.getElementById("input");
-    const icon = document.getElementById("verPassword");
-    if (passwordInput && icon) {
-      if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-      } else {
-        passwordInput.type = "password";
-      }
-    }
-  };
-
-  return { email, password, errorMessage, onSubmit, vista };
+  return { email, password, errorMessage, onSubmit };
 }
