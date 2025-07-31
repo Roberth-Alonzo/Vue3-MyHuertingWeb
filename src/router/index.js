@@ -9,6 +9,7 @@ import AddTask from "@/components/manage-tasks/AddTask.vue";
 import ViewTask from "@/components/manage-tasks/ViewTask.vue";
 import RegisteredPlants from "@/components/registered-plants/RegisteredPlants.vue";
 import VideoGuia from "@/components/videos/VideoGuia.vue";
+import VideoList from "@/components/videos/VideoList.vue";
 
 const routes = [
   {
@@ -63,6 +64,11 @@ const routes = [
     props: {
       videoUrl: "/videos/ejemplo.mp4"
     }
+  },
+  {
+    path: "/videos",
+    name: "VideoList",
+    component: VideoList
   },
 ];
 

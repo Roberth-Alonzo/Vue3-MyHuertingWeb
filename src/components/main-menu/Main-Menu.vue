@@ -25,7 +25,7 @@
                 <div class="card">
                     <h3>Videos de guía</h3>
                     <p>Videos sobre cómo plantar y cuidar tus cultivos.</p>
-                    <router-link to="/guias" class="btn">Acceder</router-link>
+                    <router-link to="/videos" class="btn">Acceder</router-link>
                 </div>
 
                 <div class="card">
