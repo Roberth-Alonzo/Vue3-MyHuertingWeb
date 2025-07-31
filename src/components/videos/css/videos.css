@@ -1,0 +1,40 @@
+/* Estilos generales para la sección de videos */
+.video-guia {
+  padding: 1.5rem;
+  background: #f4f8fb;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  max-width: 700px;
+  margin: 2rem auto;
+  transition: box-shadow 0.2s;
+}
+
+.video-guia:hover {
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+}
+
+.video-guia h2 {
+  font-size: 1.7rem;
+  color: #2a5d34;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.video-guia video {
+  width: 100%;
+  border-radius: 8px;
+  background: #000;
+  margin-bottom: 0.5rem;
+  outline: none;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+}
+
+.video-guia small {
+  color: #4b5e6b;
+  font-size: 0.95rem;
+  display: block;
+  margin-top: 0.5rem;
+  text-align: right;
+  opacity: 0.8;
+}

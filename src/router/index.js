@@ -1,13 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/components/home/HomePage.vue";
-import SignUp from "@/components/sign-up/Sign-up.vue"; 
-import LogIn from "@/components/log-in/Log-in.vue"; 
-import MainMenu from "@/components/main-menu/Main-Menu.vue"; 
+import SignUp from "@/components/sign-up/Sign-up.vue";
+import LogIn from "@/components/log-in/Log-in.vue";
+import MainMenu from "@/components/main-menu/Main-Menu.vue";
 import AddCrop from "@/components/manage-crops/AddCrop.vue";
 import ViewCrop from "@/components/manage-crops/ViewCrop.vue";
 import AddTask from "@/components/manage-tasks/AddTask.vue";
 import ViewTask from "@/components/manage-tasks/ViewTask.vue";
 import RegisteredPlants from "@/components/registered-plants/RegisteredPlants.vue";
+import VideoGuia from "@/components/videos/VideoGuia.vue";
 
 const routes = [
   {
@@ -16,17 +17,17 @@ const routes = [
     component: Home,
   },
   {
-    path: "/sign-up", 
+    path: "/sign-up",
     name: "SignUp",
     component: SignUp,
   },
   {
-    path: "/log-in", 
+    path: "/log-in",
     name: "LogIn",
     component: LogIn,
   },
   {
-    path: "/main-menu", 
+    path: "/main-menu",
     name: "MainMenu",
     component: MainMenu,
   },
@@ -54,6 +55,14 @@ const routes = [
     path: "/Registered-Plants",
     name: "RegisteredPlants",
     component: RegisteredPlants,
+  },
+  {
+    path: "/video-guia",
+    name: "VideoGuia",
+    component: VideoGuia,
+    props: {
+      videoUrl: "/videos/ejemplo.mp4"
+    }
   },
 ];
 
