@@ -7,7 +7,7 @@ import AddCrop from "@/components/manage-crops/AddCrop.vue";
 import ViewCrop from "@/components/manage-crops/ViewCrop.vue";
 import AddTask from "@/components/manage-tasks/AddTask.vue";
 import ViewTask from "@/components/manage-tasks/ViewTask.vue";
-import RegisteredPlants from "@/components/registered-plants/RegisteredPlants.vue";
+import InfoUser from "@/components/info-user/InfoUser.vue";
 
 const routes = [
   {
@@ -51,9 +51,9 @@ const routes = [
     component: ViewTask,
   },
   {
-    path: "/Registered-Plants",
-    name: "RegisteredPlants",
-    component: RegisteredPlants,
+    path : "/info-user",
+    name: "InfoUser",
+    component: InfoUser,
   },
 ];
 

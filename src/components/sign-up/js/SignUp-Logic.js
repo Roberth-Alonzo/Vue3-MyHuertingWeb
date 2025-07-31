@@ -452,21 +452,25 @@ export function useSignUpValidations() {
       // Obtener usuarios existentes
       const usuariosRegistrados = JSON.parse(localStorage.getItem("usuariosRegistrados") || "[]");
 
+      // Obtener fecha actual (solo fecha, sin hora)
+      const fechaActual = new Date();
+      const fechaCreacion = fechaActual.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+
       // Crear nuevo usuario
       const nuevoUsuario = {
         id: Date.now(),
         nombre: nombre.trim(),
         email: email.trim(),
         password: password,
-        fechaRegistro: new Date().toISOString()
+        fechaRegistro: fechaCreacion // Solo la fecha sin hora
       };
 
       // Guardar en la lista de usuarios
       usuariosRegistrados.push(nuevoUsuario);
       localStorage.setItem("usuariosRegistrados", JSON.stringify(usuariosRegistrados));
       
-      // Guardar fecha de creación para el menú de usuario
-      localStorage.setItem("userCreatedAt", nuevoUsuario.fechaRegistro);
+      // Guardar fecha de creación para el menú de usuario (también solo fecha)
+      localStorage.setItem("userCreatedAt", fechaCreacion);
       
       // Guardar datos del usuario para el menú desplegable
       const userInfo = {

@@ -7,7 +7,7 @@
           <h2 class="title">REGISTRO</h2>
 
           <div class="input-div">
-            <label for="nombre">Nombre completo</label>
+            <label for="nombre">Nombre de usuario</label>
             <input ref="nombreInput" id="nombre" type="text" name="nombre" />
             <span ref="nombreError" class="error"></span>
           </div>

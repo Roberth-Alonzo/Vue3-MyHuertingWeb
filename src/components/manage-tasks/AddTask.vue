@@ -20,7 +20,7 @@
                     </option>
                 </select>
 
-                <label for="fecha">Fecha</label>
+                <label for="fecha">Fecha límite</label>
                 <input type="date" id="fecha" name="fecha">
 
                 <label for="hora">Hora</label>
@@ -54,5 +54,5 @@ export default {
 </script>
 
 <style scoped>
-@import url('./css/styleAdd.css');
+@import "./css/styleAdd.css";
 </style>

@@ -1,6 +1,70 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
+// Array de plantas disponibles
+const plantas = [
+    {
+        nombre: "Zanahoria",
+        tipo: "Hortaliza",
+        descripcion: "Raíz comestible rica en vitaminas.",
+        consejos: "Siembra en suelos sueltos y bien drenados. Necesita riego constante sin encharcar."
+    },
+    {
+        nombre: "Pepino",
+        tipo: "Hortaliza",
+        descripcion: "Fruto fresco ideal para ensaladas.",
+        consejos: "Requiere mucho sol y riego frecuente. Utiliza tutores para que crezca vertical."
+    },
+    {
+        nombre: "Pimiento",
+        tipo: "Hortaliza",
+        descripcion: "Fruto usado en diversas recetas.",
+        consejos: "Prefiere temperaturas cálidas. No tolera el exceso de agua."
+    },
+    {
+        nombre: "Fresa",
+        tipo: "Fruta",
+        descripcion: "Fruta dulce ideal para postres.",
+        consejos: "Plántala en macetas o jardineras. Necesita sol directo y riego moderado."
+    },
+    {
+        nombre: "Romero",
+        tipo: "Hierba",
+        descripcion: "Aromática usada en cocina y medicina.",
+        consejos: "Crece bien en suelos secos. No necesita mucho riego y ama el sol."
+    },
+    {
+        nombre: "Lechuga",
+        tipo: "Hortaliza",
+        descripcion: "Hortaliza de hojas verdes muy usada en ensaladas.",
+        consejos: "Necesita semisombra y riegos frecuentes. Protege del calor extremo."
+    },
+    {
+        nombre: "Albahaca",
+        tipo: "Hierba",
+        descripcion: "Planta aromática ideal para cocinar.",
+        consejos: "Requiere sol directo y riego diario en climas cálidos. Pellizca las flores para que no suba a semilla."
+    },
+    {
+        nombre: "Tomate",
+        tipo: "Fruta",
+        descripcion: "Fruto muy usado en cocina.",
+        consejos: "Necesita sol directo, riego constante sin mojar las hojas y tutores para sostener la planta."
+    },
+    {
+        nombre: "Cilantro",
+        tipo: "Hierba",
+        descripcion: "Aromática de uso común en la cocina.",
+        consejos: "Siembra en primavera, en semisombra. Riega con frecuencia para mantener la humedad."
+    },
+    {
+        nombre: "Espinaca",
+        tipo: "Hortaliza",
+        descripcion: "Hortaliza de hoja verde rica en hierro.",
+        consejos: "Prefiere climas frescos. Riega de forma regular y cosecha hojas externas primero."
+    }
+];
+
 // Función para mostrar modal de confirmación personalizado
 function mostrarModalConfirmacion(mensaje, onAceptar, textoBotonPrincipal = 'Sí, ir a lista', textoPregunta = '¿Deseas ir a la lista de cultivos?') {
     // Crear el modal de confirmación
@@ -268,13 +332,24 @@ export function useRegistrarCultivos() {
         observaciones: ''
     })
     
-    
     // Referencias a elementos del formulario (si necesitas acceso directo)
     const cultivoForm = ref(null)
     const nombreInput = ref(null)
     const fechaInput = ref(null)
     const cantidadInput = ref(null)
     const observacionesInput = ref(null)
+    
+    // Estado para manejar la planta seleccionada
+    const plantaSeleccionada = ref(null)
+    
+    // Función para manejar la selección de planta
+    const onPlantaSeleccionada = () => {
+        if (formData.nombre) {
+            plantaSeleccionada.value = plantas.find(planta => planta.nombre === formData.nombre)
+        } else {
+            plantaSeleccionada.value = null
+        }
+    }
     
     // Función para limpiar errores
     const limpiarErrores = () => {
@@ -291,13 +366,7 @@ export function useRegistrarCultivos() {
         
         // Validar nombre
         if (formData.nombre.trim() === '') {
-            errors.nombre = 'Por favor, ingresa el nombre del cultivo.'
-            valido = false
-        } else if (formData.nombre.trim().length < 3) {
-            errors.nombre = 'El nombre debe tener al menos 3 caracteres.'
-            valido = false
-        } else if (formData.nombre.trim().length > 20) {
-            errors.nombre = 'El nombre no debe tener más de 20 caracteres.'
+            errors.nombre = 'Por favor, selecciona una planta.'
             valido = false
         }
         
@@ -331,10 +400,15 @@ export function useRegistrarCultivos() {
     
     // Función para guardar cultivo
     const guardarCultivo = () => {
+        const plantaInfo = plantas.find(planta => planta.nombre === formData.nombre)
+        
         const cultivo = {
             nombre: formData.nombre.trim(),
+            tipo: plantaInfo ? plantaInfo.tipo : '',
+            descripcion: plantaInfo ? plantaInfo.descripcion : '',
+            consejos: plantaInfo ? plantaInfo.consejos : '',
             fecha: formData.fecha,
-            cantidad: formData.cantidad, // Sin .trim() porque es un número
+            cantidad: formData.cantidad,
             observaciones: formData.observaciones.trim()
         }
         
@@ -349,14 +423,15 @@ export function useRegistrarCultivos() {
     const resetearFormulario = () => {
         formData.nombre = ''
         formData.fecha = ''
-        formData.cantidad = '' // Mantener como string vacío para el input
+        formData.cantidad = ''
         formData.observaciones = ''
+        plantaSeleccionada.value = null
         limpiarErrores()
         
         console.log('Formulario reseteado') // Para debug
     }
     
-    // Manejador del submit del formulario ACTUALIZADO
+    // Manejador del submit del formulario
     const handleSubmit = (e) => {
         e.preventDefault()
         
@@ -384,6 +459,9 @@ export function useRegistrarCultivos() {
         fechaInput,
         cantidadInput,
         observacionesInput,
+        plantas, // Exportar el array de plantas
+        plantaSeleccionada, // Exportar el estado de planta seleccionada
+        onPlantaSeleccionada, // Exportar la función para manejar selección
         handleSubmit,
         limpiarErrores,
         resetearFormulario
@@ -416,10 +494,10 @@ export function useVerCultivos() {
         mostrarModalConfirmacion(
             '¡Cultivo eliminado correctamente!',
             () => {
-                router.push('/main-menu')
+                router.push('/add-crop')
             },
-            'Ir al menú principal',
-            '¿Deseas ir al menú principal?'
+            'Agregar nuevo cultivo',
+            '¿Deseas agregar un nuevo cultivo?'
         )
     }
     

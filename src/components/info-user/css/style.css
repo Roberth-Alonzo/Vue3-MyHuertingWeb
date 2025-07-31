@@ -1,0 +1,349 @@
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap");
+
+/* Wrapper principal */
+.profile-wrapper {
+    font-family: "Josefin Sans", sans-serif;
+    background-color: rgba(50, 50, 50, 0.8);
+    color: white;
+    background-image: url('/images/fondoM.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    font-size: large;
+    min-height: 100vh;
+    min-height: 100dvh;
+    width: 100%;
+    padding-bottom: 15px;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    background-color: rgba(50, 50, 50, 0.8);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 0 10px;
+    position: relative;
+    font-size: 25px;
+}
+
+.logo-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+    position: fixed;
+    top: 50%;
+    left: 30px; 
+    transform: translateY(-50%); 
+    z-index: 1000;
+    cursor: pointer;  
+    transition: transform 0.3s ease-in-out;
+}
+
+.logo-link img {
+    height: 50px; 
+    width: auto; 
+}
+
+.logo-link:hover {
+    transform: translateY(-50%) scale(1.1);  
+}
+
+/* Container principal */
+.container {
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 30px;
+}
+
+.profile-content {
+    background-color: rgba(50, 50, 50, 0.8);
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    backdrop-filter: blur(10px);
+}
+
+/* Título principal */
+.title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: #3ce744;
+    text-transform: uppercase;
+}
+
+/* Títulos de sección */
+.section-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #66bb6a;
+    margin: 10px 0 15px 0;
+    padding: 10px 0;
+    border-bottom: 2px solid rgba(102, 187, 106, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Formulario */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-div {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+    color: #3ce744;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+/* Inputs y selects */
+input[type="text"],
+input[type="tel"],
+input[type="number"],
+select {
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    background: white;
+    color: #333;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    height: 45px;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #66bb6a;
+    box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.1);
+}
+
+select {
+    cursor: pointer;
+}
+
+select option {
+    padding: 10px;
+    color: #333;
+}
+
+/* Mensajes de error */
+.error {
+    color: #ff4444;
+    font-size: 15px;
+    margin-top: 5px;
+    font-weight: bolder;
+}
+
+/* Información actual del perfil */
+.current-info {
+    margin: 25px 0;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.current-info h3 {
+    margin: 0 0 20px 0;
+    color: #66bb6a;
+    font-size: 20px;
+    text-align: center;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.info-item {
+    padding: 8px 0;
+    line-height: 1.5;
+    color: #fff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-item strong {
+    color: #3ce744;
+    display: inline-block;
+    min-width: 120px;
+}
+
+.button {
+    font-size: 1.2rem; 
+    font-weight: 600;
+    background-color: #ffffff00;
+    color: #fff;
+    width: fit-content; 
+    padding: 0.8em 2em; 
+    border: #3ce744 0.2em solid;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    position: relative;
+    transition: all 0.6s ease;
+    min-height: 50px;
+    /* CLAVE: Eliminar cualquier padding o margin interno que cause desalineación */
+    box-sizing: border-box;
+}
+
+.button:hover {
+    background-color: #43ff367a;
+    cursor: pointer;
+}
+
+.button svg {
+    width: 1.6em;
+    height: 1.6em;
+    position: absolute;
+    left: 15px;
+    transition: all 0.6s ease;
+    /* NUEVO: Asegurar que el SVG esté centrado verticalmente */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.button:hover svg {
+    /* CORREGIDO: Mantener centrado vertical al hacer hover */
+    transform: translateY(-50%) translateX(5px);
+}
+
+/* CORREGIDO: Centrado perfecto del texto */
+.text {
+    margin-left: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    z-index: 1;
+    line-height: 1;
+    /* CLAVE: Forzar alineación central */
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    /* NUEVO: Eliminar cualquier desplazamiento vertical */
+    vertical-align: middle;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: #3ce744;
+    border: 2px solid #3ce744;
+}
+
+.btn-secondary:hover {
+    background-color: rgba(60, 231, 68, 0.1);
+    transform: translateY(-2px);
+}
+
+.btn-secondary svg {
+    /* Mantener SVG centrado en botones secundarios */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.btn-secondary:hover svg {
+    transform: translateY(-50%) translateX(5px);
+}
+
+.btn-cancel {
+    background-color: transparent;
+    color: #ff6b6b;
+    border: 2px solid #ff6b6b;
+}
+
+.btn-cancel:hover {
+    background-color: rgba(255, 107, 107, 0.1);
+    transform: translateY(-2px);
+}
+
+.btn-cancel svg {
+    /* Mantener SVG centrado en botones de cancelar */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.btn-cancel:hover svg {
+    transform: translateY(-50%) translateX(5px);
+}
+
+/* NUEVA REGLA: Asegurar que todos los elementos del botón estén alineados */
+.button * {
+    vertical-align: middle;
+}
+
+/* NUEVA REGLA: Para navegadores que tengan problemas con flexbox */
+.button .text {
+    position: relative;
+    top: 0;
+    bottom: 0;
+    margin: auto 0 auto 35px;
+}
+
+/* Grupo de botones */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+/* Responsive - Mantener alineación en móviles */
+@media (max-width: 768px) {
+    .button {
+        font-size: 1.1rem;
+        padding: 0.7em 1.8em;
+        min-height: 45px;
+    }
+    
+    .button svg {
+        width: 1.4em;
+        height: 1.4em;
+        left: 12px;
+    }
+    
+    .text {
+        margin-left: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .button {
+        font-size: 1rem;
+        padding: 0.6em 1.5em;
+        min-height: 40px;
+    }
+    
+    .button svg {
+        width: 1.2em;
+        height: 1.2em;
+        left: 10px;
+    }
+    
+    .text {
+        margin-left: 25px;
+    }
+}
