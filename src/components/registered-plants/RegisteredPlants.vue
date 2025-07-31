@@ -24,4 +24,4 @@ import componentScript from './js/RegisteredPlants.js';
 export default componentScript;
 </script>
 
-<style scoped src="./css/RegisteredPlants.css"></style>
+<style scoped src="./css/style.css"></style>
