@@ -726,21 +726,19 @@ export function useListaTareas() {
         router.push('/add-task')
     }
 
-    // FUNCIÓN PARA FORMATEAR FECHA - Movida desde el componente Vue
+    // FUNCIÓN PARA FORMATEAR FECHA 
     const formatearFechaSafe = (fecha) => {
         if (!fecha) return ''
         
-        // Si la fecha ya está en formato YYYY-MM-DD, convertirla a DD/MM/YYYY
         if (typeof fecha === 'string' && fecha.match(/^\d{4}-\d{2}-\d{2}$/)) {
             const [year, month, day] = fecha.split('-')
             return `${day}/${month}/${year}`
         }
-        
         // Si por alguna razón viene en otro formato, devolverla tal como está
         return fecha
     }
 
-    // Función adicional para debugging - Movida desde el componente Vue
+    // Función adicional para debugging 
     const debugTarea = (tarea) => {
         console.log('Tarea debug:', {
             titulo: tarea.titulo,
