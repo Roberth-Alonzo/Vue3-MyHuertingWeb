@@ -6,7 +6,7 @@
             </router-link>
             <h1>📋 Tareas Programadas</h1>
         </header>
-       
+        
         <section class="form-container">
             <table id="tabla-tareas">
                 <thead>

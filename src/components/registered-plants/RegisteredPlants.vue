@@ -2,7 +2,7 @@
   <div class="registered-plants-wrapper">
     <header class="header">
       <router-link to="/main-menu" class="logo-link">
-         <img src="/images/arrowM.svg" alt="Volver">
+        <img src="/images/arrowM.svg" alt="Volver">
       </router-link>
       <h1>🌱 Plantas Registradas </h1>
     </header>

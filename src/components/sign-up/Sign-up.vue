@@ -63,5 +63,4 @@ export default {
 
 <style scoped>
 @import "./css/style.css";
-@import "./css/validations.css";
 </style>

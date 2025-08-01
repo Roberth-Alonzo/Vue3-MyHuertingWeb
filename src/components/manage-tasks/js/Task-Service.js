@@ -627,7 +627,7 @@ export function useProgramarTarea() {
     }
 }
 
-// Composable para ListaTareas - CON TODA LA LÓGICA MOVIDA DESDE EL COMPONENTE VUE
+// Composable para ListaTareas 
 export function useListaTareas() {
     const router = useRouter()
     const tareas = ref([])
@@ -683,7 +683,7 @@ export function useListaTareas() {
         )
     }
 
-    // Eliminar tarea local (diferente de la función global eliminarTarea)
+    // Eliminar tarea local
     const eliminarTareaLocal = (index) => {
         tareas.value.splice(index, 1)
         localStorage.setItem('tareas', JSON.stringify(tareas.value))

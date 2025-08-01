@@ -459,16 +459,15 @@ export function useRegistrarCultivos() {
         fechaInput,
         cantidadInput,
         observacionesInput,
-        plantas, // Exportar el array de plantas
-        plantaSeleccionada, // Exportar el estado de planta seleccionada
-        onPlantaSeleccionada, // Exportar la función para manejar selección
+        plantas, 
+        plantaSeleccionada, 
+        onPlantaSeleccionada,
         handleSubmit,
         limpiarErrores,
         resetearFormulario
     }
 }
 
-// Composable para ver cultivos (ViewCrop.vue)
 export function useVerCultivos() {
     const router = useRouter()
     
@@ -511,7 +510,7 @@ export function useVerCultivos() {
         )
     }
     
-    // NUEVA: Función para ir a agregar cultivo
+    // Función para ir a agregar cultivo
     const irAgregarCultivo = () => {
         router.push('/add-crop')
     }
@@ -526,16 +525,16 @@ export function useVerCultivos() {
         cargarCultivos,
         eliminarCultivo,
         confirmarEliminacion,
-        irAgregarCultivo  // Exportar la nueva función para el enlace "Agregar primer cultivo"
+        irAgregarCultivo 
     }
 }
 
-// Función utilitaria para obtener todos los cultivos (puede ser útil en otros componentes)
+// Función utilitaria para obtener todos los cultivos
 export function obtenerCultivos() {
     return JSON.parse(localStorage.getItem('cultivos')) || []
 }
 
-// Función utilitaria para guardar cultivos (puede ser útil en otros componentes)
+// Función utilitaria para guardar cultivos
 export function guardarCultivos(cultivos) {
     localStorage.setItem('cultivos', JSON.stringify(cultivos))
 }

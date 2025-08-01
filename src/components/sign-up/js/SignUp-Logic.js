@@ -3,7 +3,7 @@ import { useRouter } from "vue-router";
 
 // Función para mostrar modal de confirmación personalizado
 function mostrarModalConfirmacion(mensaje, onIrLogin, textoPregunta = '¿Deseas ir al inicio de sesión?') {
-    // Crear el modal de confirmación
+  
     const modal = document.createElement('div');
     modal.style.cssText = `
         position: fixed;
@@ -235,7 +235,7 @@ export function useSignUpValidations() {
     return true;
   };
 
-  // Validar email - CON VALIDACIÓN EN TIEMPO REAL
+  // Validar email 
   const validateEmail = () => {
     const email = emailInput.value?.value || "";
     console.log("Validando email:", email);
@@ -311,7 +311,7 @@ export function useSignUpValidations() {
     return strength >= 40;
   };
 
-  // Validar contraseña - CON VALIDACIÓN EN TIEMPO REAL
+  // Validar contraseña
   const validatePassword = () => {
     const password = passwordInput.value?.value || "";
     console.log("Validando password:", password);
@@ -330,7 +330,7 @@ export function useSignUpValidations() {
     return true;
   };
 
-  // Validar confirmación - CON VALIDACIÓN EN TIEMPO REAL
+  // Validar confirmación
   const validatePasswordConfirm = () => {
     const password = passwordInput.value?.value || "";
     const passwordConfirm = passwordConfirmInput.value?.value || "";
@@ -348,7 +348,7 @@ export function useSignUpValidations() {
     return true;
   };
 
-  // Event listeners CON VALIDACIÓN EN TIEMPO REAL
+  // Event listeners
   const setupRealTimeValidation = () => {
     console.log("Configurando validación en tiempo real...");
     
@@ -369,7 +369,7 @@ export function useSignUpValidations() {
         emailInput.value.addEventListener(eventType, () => {
           setTimeout(() => {
             validateEmail(); // Validar inmediatamente
-          }, 300); // Delay más largo para email por la verificación de duplicados
+          }, 300); 
         });
       });
     }
@@ -399,7 +399,6 @@ export function useSignUpValidations() {
       });
     }
 
-    // PASSWORD CONFIRM - Validación inmediata
     if (passwordConfirmInput.value) {
       ['input', 'keyup', 'blur'].forEach(eventType => {
         passwordConfirmInput.value.addEventListener(eventType, () => {
@@ -419,7 +418,6 @@ export function useSignUpValidations() {
     }
   };
 
-  // Submit handler ACTUALIZADO CON MODAL
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log("Formulario enviado");
@@ -447,14 +445,13 @@ export function useSignUpValidations() {
       isPasswordConfirmValid 
     });
 
-    // Si todo está bien
     if (isNameValid && isEmailValid && isPasswordValid && isPasswordConfirmValid) {
       // Obtener usuarios existentes
       const usuariosRegistrados = JSON.parse(localStorage.getItem("usuariosRegistrados") || "[]");
 
-      // Obtener fecha actual (solo fecha, sin hora)
+      // Obtener fecha actual 
       const fechaActual = new Date();
-      const fechaCreacion = fechaActual.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+      const fechaCreacion = fechaActual.toISOString().split('T')[0]; 
 
       // Crear nuevo usuario
       const nuevoUsuario = {
@@ -462,14 +459,14 @@ export function useSignUpValidations() {
         nombre: nombre.trim(),
         email: email.trim(),
         password: password,
-        fechaRegistro: fechaCreacion // Solo la fecha sin hora
+        fechaRegistro: fechaCreacion
       };
 
       // Guardar en la lista de usuarios
       usuariosRegistrados.push(nuevoUsuario);
       localStorage.setItem("usuariosRegistrados", JSON.stringify(usuariosRegistrados));
       
-      // Guardar fecha de creación para el menú de usuario (también solo fecha)
+      // Guardar fecha de creación para el menú de usuario 
       localStorage.setItem("userCreatedAt", fechaCreacion);
       
       // Guardar datos del usuario para el menú desplegable
@@ -499,7 +496,6 @@ export function useSignUpValidations() {
       // Limpiar errores
       clearAllErrors();
 
-      // MOSTRAR MODAL EN LUGAR DE ALERT
       mostrarModalConfirmacion(
         '¡Tu cuenta ha sido creada correctamente! Ya puedes iniciar sesión con tus credenciales.',
         () => {
@@ -523,7 +519,7 @@ export function useSignUpValidations() {
         passwordConfirm: !!passwordConfirmInput.value
       });
       
-      setupRealTimeValidation(); // Cambié el nombre para ser más claro
+      setupRealTimeValidation();
     });
   });
 
