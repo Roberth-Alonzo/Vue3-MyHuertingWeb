@@ -310,21 +310,21 @@ export default {
   .logo-link {
     left: 15px;
   }
-  
+
   .logo-link img {
     height: 40px;
   }
-  
+
   .guias-header {
     font-size: 20px;
     height: 80px;
   }
-  
+
   .contenedor-videos {
     padding: 20px;
     margin: 20px 10px;
   }
-  
+
   .video-card {
     width: 280px;
   }
