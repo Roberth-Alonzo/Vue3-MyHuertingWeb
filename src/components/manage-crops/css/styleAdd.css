@@ -157,19 +157,18 @@ button {
     margin-top: 4px;
 }
 
-
 .planta-info {
     margin: 15px 0;
 }
 
 .info-card {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(40, 40, 40, 0.95);
+    border: 1px solid rgba(60, 231, 68, 0.3);
     border-radius: 12px;
     padding: 20px;
     margin: 10px 0;
     backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .info-card h3 {
@@ -182,25 +181,28 @@ button {
 .info-item {
     margin: 10px 0;
     line-height: 1.5;
-    color: #333;
+    color: #e8e8e8;
+    font-size: 16px;
 }
 
 .info-item strong {
-    color: #2e7d32;
-    display: inline-block;
-    min-width: 80px;
+    color: #66bb6a;
+    font-weight: 600;
+    margin-right: 8px;
 }
 
 .consejos {
-    background: rgba(102, 187, 106, 0.1);
+    background: rgba(60, 231, 68, 0.15);
     padding: 12px;
     border-radius: 8px;
     border-left: 4px solid #66bb6a;
     margin-top: 15px;
+    color: #f0f0f0;
 }
 
 .consejos strong {
-    color: #1b5e20;
+    color: #4caf50;
+    font-weight: 600;
 }
 
 /* Estilos para el select */
