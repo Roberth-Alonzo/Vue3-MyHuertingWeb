@@ -10,6 +10,8 @@ import ViewTask from "@/components/manage-tasks/ViewTask.vue";
 import RegisteredPlants from "@/components/registered-plants/RegisteredPlants.vue";
 import VideoGuia from "@/components/videos/VideoGuia.vue";
 import VideoList from "@/components/videos/VideoList.vue";
+import PlantVideoGuide from "@/components/videos/PlantVideoGuide.vue";
+import GuiasCultivo from "@/components/Guias/GuiasCultivo.vue";
 
 const routes = [
   {
@@ -61,14 +63,23 @@ const routes = [
     path: "/video-guia",
     name: "VideoGuia",
     component: VideoGuia,
-    props: {
-      videoUrl: "/videos/ejemplo.mp4"
-    }
+    props: route => ({ videoUrl: route.query.videoUrl || "/videos/ejemplo.mp4" })
   },
   {
     path: "/videos",
     name: "VideoList",
     component: VideoList
+  },
+  {
+    path: "/plant-videos/:plantName",
+    name: "PlantVideoGuide",
+    component: PlantVideoGuide,
+    props: true
+  },
+  {
+    path: "/guias-cultivo",
+    name: "GuiasCultivo",
+    component: GuiasCultivo
   },
 ];
 

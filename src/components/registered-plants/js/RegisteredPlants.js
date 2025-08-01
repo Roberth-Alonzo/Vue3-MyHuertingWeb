@@ -1,3 +1,5 @@
+import { getVideosForPlant, getPlantsWithVideos } from '../../videos/js/videoUtils';
+
 export default {
   name: "RegisteredPlants",
   data() {
@@ -65,5 +67,16 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    hasVideos(plantName) {
+      const videos = getVideosForPlant(plantName);
+      return videos && videos.length > 0;
+    },
+
+    getVideoCount(plantName) {
+      const videos = getVideosForPlant(plantName);
+      return videos ? videos.length : 0;
+    }
   }
 };

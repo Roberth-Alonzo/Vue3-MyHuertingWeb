@@ -40,6 +40,31 @@ body {
   position: relative;
   font-size: 25px;
   text-align: center;
+  gap: 20px;
+}
+
+.guias-link {
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+  border: 2px solid transparent;
+}
+
+.guias-link:hover {
+  background: linear-gradient(135deg, #f7931e, #ff6b35);
+  transform: translateY(-50%) translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .logo-link {
@@ -106,4 +131,141 @@ body {
 
 .tarjeta-planta p strong {
   color: #a5d6a7;
+}
+
+/* Video section styles */
+.plant-videos {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.videos-available {
+  text-align: center;
+}
+
+.video-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 8px;
+  background: rgba(76, 175, 80, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.video-icon {
+  font-size: 1.2rem;
+}
+
+.video-count {
+  font-size: 0.9rem;
+  color: #a5d6a7;
+  font-weight: 500;
+}
+
+.watch-videos-btn {
+  display: inline-block;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #4caf50, #45a049);
+  color: white;
+  text-decoration: none;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.watch-videos-btn:hover {
+  background: linear-gradient(135deg, #45a049, #3d8b40);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
+.no-videos {
+  text-align: center;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.no-video-icon {
+  font-size: 1.1rem;
+  opacity: 0.7;
+  margin-right: 8px;
+}
+
+.no-video-text {
+  font-size: 0.85rem;
+  color: #bbb;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.general-videos-link {
+  display: inline-block;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ddd;
+  text-decoration: none;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.general-videos-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #form-container {
+    padding: 20px 30px;
+  }
+
+  .plantas-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .watch-videos-btn {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+  }
+
+  .video-indicator {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .video-count {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #form-container {
+    padding: 15px 20px;
+  }
+
+  .plantas-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .tarjeta-planta {
+    padding: 15px;
+  }
+
+  .watch-videos-btn {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
 }
