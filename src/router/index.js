@@ -9,7 +9,7 @@ import AddTask from "@/components/manage-tasks/AddTask.vue";
 import ViewTask from "@/components/manage-tasks/ViewTask.vue";
 import InfoUser from "@/components/info-user/InfoUser.vue";
 import RegisteredPlants from "@/components/registered-plants/RegisteredPlants.vue";
-import Guias from "@/components/Guias/Guias.vue";
+import GuidesVideo from "@/components/guides/GuidesVideo.vue";
 
 const routes = [
   {
@@ -58,14 +58,14 @@ const routes = [
     component: InfoUser,
   },
   {
-    path: "/Registered-Plants",
+    path: "/registered-Plants",
     name: "RegisteredPlants",
     component: RegisteredPlants,
   },
   {
-    path: "/guias",
-    name: "Guias",
-    component: Guias,
+    path: "/guides-video",
+    name: "GuidesVideo",
+    component: GuidesVideo,
   },
 ];
 

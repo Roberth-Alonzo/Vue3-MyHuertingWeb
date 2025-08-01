@@ -143,12 +143,12 @@
                             <h3>Ver Tareas</h3>
                             <p>Gestionar tareas existentes</p>
                         </router-link>
-                        <router-link to="/guias" class="action-card">
+                        <router-link to="/guides-video" class="action-card">
                             <div class="action-icon">🎥</div>
                             <h3>Guías</h3>
                             <p>Videos instructivos</p>
                         </router-link>
-                        <router-link to="/Registered-Plants" class="action-card">
+                        <router-link to="/registered-Plants" class="action-card">
                             <div class="action-icon">🍃</div>
                             <h3>Plantas</h3>
                             <p>Catálogo de plantas</p>

@@ -6,7 +6,6 @@
       </router-link>
       <h1>📽️ Guías de Cultivo</h1>
     </header>
-
     <div class="contenedor-videos">
       <div
         v-for="planta in plantas"
@@ -31,8 +30,7 @@
         </div>
       </div>
     </div>
-
-    <!-- Modal para video en pantalla completa -->
+    <!--* Modal para video en pantalla completa *-->
     <div v-if="videoSeleccionado" class="video-modal" @click="cerrarModal">
       <div class="modal-content" @click.stop>
         <button class="modal-close" @click="cerrarModal">×</button>
@@ -49,7 +47,8 @@
 </template>
 
 <script>
-import GuiasLogic from './js/guias.js';
+import GuiasLogic from './js/Guides-Service.js';
+
 export default GuiasLogic;
 </script>
 
