@@ -8,7 +8,6 @@ export function useDashboard() {
     const usuarios = ref([]);
     const clima = ref(null);
 
-    // 🔧 FUNCIÓN CORREGIDA - Obtener fecha actual como string YYYY-MM-DD (sin problemas de zona horaria)
     const obtenerFechaHoyString = () => {
         const hoy = new Date();
         const year = hoy.getFullYear();
@@ -17,20 +16,16 @@ export function useDashboard() {
         return `${year}-${month}-${day}`;
     };
 
-    // 🔧 FUNCIÓN CORREGIDA - Comparar fechas usando strings (evita problemas de zona horaria)
     const compararFechasString = (fecha1String, fecha2String) => {
         if (fecha1String < fecha2String) return -1;
         if (fecha1String > fecha2String) return 1;
         return 0;
     };
 
-    // 🔧 FUNCIÓN CORREGIDA - Calcular diferencia de días usando strings
     const calcularDiferenciaDias = (fechaString1, fechaString2) => {
-        // Parsear fechas manualmente para evitar problemas de zona horaria
         const [year1, month1, day1] = fechaString1.split('-').map(Number);
         const [year2, month2, day2] = fechaString2.split('-').map(Number);
         
-        // Crear fechas en zona horaria local (sin problemas de UTC)
         const fecha1 = new Date(year1, month1 - 1, day1);
         const fecha2 = new Date(year2, month2 - 1, day2);
         
@@ -52,7 +47,7 @@ export function useDashboard() {
                 tareas.value = JSON.parse(tareasData);
             }
 
-            // Cargar usuarios registrados (nombre actualizado de la tabla)
+            // Cargar usuarios registrados 
             const usuariosData = localStorage.getItem("usuariosRegistrados");
             if (usuariosData) {
                 usuarios.value = JSON.parse(usuariosData);
@@ -62,7 +57,6 @@ export function useDashboard() {
         }
     };
 
-    // 🔧 CORREGIDO - Solo usar OpenWeatherMap con tu API key
     const cargarClima = async () => {
         try {
             const OWM_API_KEY = "399bb3c7a5b6f02b697d7a31da62f4f2"; // Tu API key de OpenWeatherMap
@@ -233,7 +227,6 @@ export function useDashboard() {
         return "🍅 Listo para cosecha";
     };
 
-    // 🔧 FUNCIÓN CORREGIDA - Formatear fecha para mostrar (evita problemas de zona horaria)
     const formatearFecha = (fecha) => {
         if (!fecha) return '';
         
@@ -335,7 +328,6 @@ export function useDashboard() {
         document.body.appendChild(modal);
     };
 
-    // FUNCIÓN COMPLETAR TAREA ACTUALIZADA - SINCRONIZACIÓN COMPLETA
     const completarTarea = (indexTareasHoy) => {
         // Encontrar la tarea real en el array completo de tareas
         const tareaHoy = tareasHoy.value[indexTareasHoy];
@@ -361,14 +353,12 @@ export function useDashboard() {
         
         const tituloTarea = tareas.value[indiceReal].titulo;
         
-        // 🔄 SINCRONIZACIÓN COMPLETA: Actualizar AMBOS campos
         tareas.value[indiceReal].completada = true;     // Para el dashboard
         tareas.value[indiceReal].estado = "Realizada";  // Para la lista de tareas
         
         // Guardar en localStorage
         localStorage.setItem("tareas", JSON.stringify(tareas.value));
         
-        // 🎉 Mostrar modal elegante de confirmación
         mostrarModalTareaCompletada(tituloTarea);
         
         console.log('✅ Tarea sincronizada:', {
@@ -392,7 +382,6 @@ export function useDashboard() {
         }
     };
 
-    // 🔧 COMPUTED CORREGIDO - Tareas de hoy usando comparación de strings
     const tareasHoy = computed(() => {
         const hoy = obtenerFechaHoyString();
         console.log('📅 Fecha de hoy (dashboard):', hoy);
@@ -409,7 +398,6 @@ export function useDashboard() {
         return tareasDeHoy;
     });
 
-    // 🔧 COMPUTED CORREGIDO - Próximas tareas (SOLO después del día actual)
     const proximasTareas = computed(() => {
         const hoy = obtenerFechaHoyString();
         console.log('📅 Calculando próximas tareas desde:', hoy);
@@ -465,7 +453,7 @@ export function useDashboard() {
         cultivos,
         tareas,
         usuarios,
-        usuariosRegistrados: usuarios, // Alias para compatibilidad con el template
+        usuariosRegistrados: usuarios,
         clima,
 
         // Computed
