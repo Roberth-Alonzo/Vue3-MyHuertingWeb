@@ -546,6 +546,57 @@ export function guardarTarea(e, navigationCallback) {
     return true;
 }
 
+// NUEVAS FUNCIONES PARA EDITAR TAREAS
+
+// Obtener tarea por índice
+export function obtenerTareaPorIndice(index) {
+    const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+    return tareas[index] || null;
+}
+
+// Actualizar tarea existente
+export function actualizarTarea(index, tareaActualizada, navigationCallback) {
+    if (!validarFormulario()) {
+        return false;
+    }
+
+    const titulo = document.getElementById('titulo').value.trim();
+    const fecha = document.getElementById('fecha').value;
+    const hora = document.getElementById('hora').value;
+    const descripcion = document.getElementById('descripcion').value.trim();
+    const miembro = document.getElementById('miembro').value;
+
+    const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+    
+    if (index >= 0 && index < tareas.length) {
+        // Mantener el estado actual si la fecha no cambió o actualizar según nueva fecha
+        const estadoActual = tareas[index].estado;
+        const estadoNuevo = estadoActual === "Realizada" ? "Realizada" : determinarEstadoInicial(fecha);
+        
+        tareas[index] = {
+            ...tareas[index],
+            titulo,
+            fecha,
+            hora,
+            descripcion,
+            miembro,
+            estado: estadoNuevo
+        };
+
+        localStorage.setItem("tareas", JSON.stringify(tareas));
+
+        // Mostrar confirmación personalizada con opción de redirección
+        mostrarConfirmacionConRedireccion(
+            "¡Tarea actualizada exitosamente!",
+            navigationCallback
+        );
+        
+        return true;
+    }
+    
+    return false;
+}
+
 // Obtener todas las tareas
 export function obtenerTareas() {
     return JSON.parse(localStorage.getItem("tareas")) || [];
@@ -627,6 +678,46 @@ export function useProgramarTarea() {
     }
 }
 
+// NUEVO Composable para EditarTarea
+export function useEditarTarea() {
+    const router = useRouter()
+    const usuarios = ref([])
+    const tarea = ref({})
+    const tareaIndex = ref(-1)
+
+    // Cargar usuarios y tarea a editar
+    const cargarDatosEdicion = (index) => {
+        usuarios.value = cargarMiembros()
+        tareaIndex.value = index
+        const tareaData = obtenerTareaPorIndice(index)
+        if (tareaData) {
+            tarea.value = { ...tareaData }
+        }
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        
+        const success = actualizarTarea(tareaIndex.value, tarea.value, () => {
+            router.push('/view-task')
+        })
+        return success
+    }
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0]
+        return file
+    }
+
+    return {
+        usuarios,
+        tarea,
+        cargarDatosEdicion,
+        handleSubmit,
+        handleFileChange
+    }
+}
+
 // Composable para ListaTareas 
 export function useListaTareas() {
     const router = useRouter()
@@ -692,6 +783,11 @@ export function useListaTareas() {
         mostrarModalPostEliminacion(() => {
             router.push('/add-task')
         })
+    }
+
+    // NUEVA FUNCIÓN: Ir a editar tarea
+    const irEditarTarea = (index) => {
+        router.push(`/edit-task/${index}`)
     }
 
     // Marcar tarea como realizada desde la lista
@@ -761,6 +857,7 @@ export function useListaTareas() {
     return {
         tareas,
         confirmarEliminacionTarea,
+        irEditarTarea, // NUEVA FUNCIÓN EXPORTADA
         marcarComoRealizada,
         marcarComoPendiente,
         irAgregarTarea,

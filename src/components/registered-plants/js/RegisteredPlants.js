@@ -62,6 +62,67 @@ export default {
           tipo: "Hortaliza",
           descripcion: "Hortaliza de hoja verde rica en hierro.",
           consejos: "Prefiere climas frescos. Riega de forma regular y cosecha hojas externas primero."
+        },
+
+        {
+          nombre: "Berenjena",
+          tipo: "Hortaliza",
+          descripcion: "Fruto de color morado, ideal para guisos.",
+          consejos: "Requiere mucho sol, suelos bien drenados y riego moderado."
+        },
+        {
+          nombre: "Yuca",
+          tipo: "Raíz",
+          descripcion: "Tubérculo rico en carbohidratos.",
+          consejos: "Prefiere suelos sueltos y profundos. Necesita poco riego y mucho sol."
+        },
+        {
+          nombre: "Camote",
+          tipo: "Raíz",
+          descripcion: "Dulce y rica en nutrientes.",
+          consejos: "Siembra en suelos sueltos. Requiere sol pleno y riego ocasional."
+        },
+        {
+          nombre: "Maíz",
+          tipo: "Cereal",
+          descripcion: "Planta alta con mazorcas.",
+          consejos: "Requiere sol pleno, riego constante y espacio amplio para crecer."
+        },
+        {
+          nombre: "Sandía",
+          tipo: "Fruta",
+          descripcion: "Fruto grande y jugoso ideal para climas cálidos.",
+          consejos: "Necesita mucho sol, suelos arenosos y riego moderado."
+        },
+        {
+          nombre: "Melón",
+          tipo: "Fruta",
+          descripcion: "Fruta dulce con alto contenido de agua.",
+          consejos: "Requiere sol pleno, suelos bien drenados y poco riego durante la maduración."
+        },
+        {
+          nombre: "Papaya",
+          tipo: "Fruta",
+          descripcion: "Fruto tropical dulce y digestivo.",
+          consejos: "Requiere buen sol, riego regular y suelos fértiles."
+        },
+        {
+          nombre: "Ajo",
+          tipo: "Bulbo",
+          descripcion: "Muy usado en la cocina.",
+          consejos: "Prefiere semisombra, suelo suelto y riego moderado."
+        },
+        {
+          nombre: "Cebolla",
+          tipo: "Bulbo",
+          descripcion: "Base aromática para muchas comidas.",
+          consejos: "Requiere sol parcial a pleno, riego moderado y suelo fértil."
+        },
+        {
+          nombre: "Guayaba",
+          tipo: "Fruta",
+          descripcion: "Rica en vitamina C.",
+          consejos: "Requiere sol pleno, riego regular y poda ocasional."
         }
       ]
     };

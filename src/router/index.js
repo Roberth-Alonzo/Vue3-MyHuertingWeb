@@ -5,8 +5,10 @@ import LogIn from "@/components/log-in/Log-in.vue";
 import MainMenu from "@/components/main-menu/Main-Menu.vue";
 import AddCrop from "@/components/manage-crops/AddCrop.vue";
 import ViewCrop from "@/components/manage-crops/ViewCrop.vue";
+import EditCrop from "@/components/manage-crops/EditCrop.vue";
 import AddTask from "@/components/manage-tasks/AddTask.vue";
 import ViewTask from "@/components/manage-tasks/ViewTask.vue";
+import EditTask from "@/components/manage-tasks/EditTask.vue";
 import InfoUser from "@/components/info-user/InfoUser.vue";
 import RegisteredPlants from "@/components/registered-plants/RegisteredPlants.vue";
 import GuidesVideo from "@/components/guides/GuidesVideo.vue";
@@ -43,6 +45,12 @@ const routes = [
     component: ViewCrop,
   },
   {
+    path : "/edit-crop/:index",
+    name: "EditCrop",
+    component: EditCrop,
+    props: true 
+  },
+  {
     path: "/add-task",
     name: "AddTask",
     component: AddTask,
@@ -51,6 +59,12 @@ const routes = [
     path : "/view-task",
     name: "ViewTask",
     component: ViewTask,
+  },
+  {
+    path : "/edit-task/:index",
+    name: "EditTask",
+    component: EditTask,
+    props: true 
   },
   {
     path : "/info-user",

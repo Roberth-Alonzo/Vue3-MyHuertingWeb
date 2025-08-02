@@ -96,6 +96,13 @@ header {
     color: #a5d6a7;
 }
 
+.botones-accion {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
 button.delete-btn {
     width: 80px;
     height: 40px; 
@@ -134,4 +141,44 @@ button.delete-btn .icon {
 
 button.delete-btn .icon svg {
     fill: white;
+}
+
+button.edit-btn {
+    width: 80px;
+    height: 40px; 
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    border: 3px solid #8e24aa;
+    border-radius: 5px;
+    background-color: transparent;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+    transition: background-color 200ms, border-color 200ms; 
+}
+
+button.edit-btn:hover {
+    background-color: rgba(142, 36, 170, 0.3); 
+    border-color: #ab47bc; 
+}
+
+button.edit-btn:focus {
+    outline: none;
+}
+
+button.edit-btn .icon {
+    position: relative; 
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+button.edit-btn .icon svg {
+    stroke: white;
 }

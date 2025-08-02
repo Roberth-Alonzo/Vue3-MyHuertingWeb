@@ -83,10 +83,17 @@ table {
 
 #tabla-tareas td:nth-child(4),
 #tabla-tareas th:nth-child(4) {
-    width: 300px;
+    width: 200px;
     white-space: normal;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    vertical-align: middle;
+}
+
+#tabla-tareas td:nth-child(7),
+#tabla-tareas th:nth-child(7) {
+    width: 180px;
+    text-align: center;
     vertical-align: middle;
 }
 
@@ -96,6 +103,7 @@ td {
     text-align: left;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     vertical-align: middle;
+    height: 60px;
 }
 
 th {
@@ -118,11 +126,63 @@ a {
     font-weight: bold;
 }
 
-button.delete-btn {
-    width: 80px;
-    height: 40px; 
+/* Estilos para la celda de acciones */
+.actions-cell {
+    text-align: center;
+    padding: 12px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+/* Estilos del botón de editar */
+button.edit-btn {
+    width: 70px;
+    height: 35px; 
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center; 
+    border: 3px solid #8e24aa;
+    border-radius: 5px;
+    background-color: transparent;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+    margin: 0 3px;
+    vertical-align: middle;
+    transition: background-color 200ms, border-color 200ms; 
+}
+
+button.edit-btn:hover {
+    background-color: rgba(142, 36, 170, 0.3); 
+    border-color: #ab47bc; 
+}
+
+button.edit-btn:focus {
+    outline: none;
+}
+
+button.edit-btn .icon {
+    position: relative; 
+    height: 24px;
+    width: 24px;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+button.edit-btn .icon svg {
+    stroke: white;
+}
+
+/* Estilos del botón de eliminar (ya existentes) */
+button.delete-btn {
+    width: 70px;
+    height: 35px; 
+    cursor: pointer;
+    display: inline-flex;
     align-items: center;
     justify-content: center; 
     border: 3px solid #e62222;
@@ -132,6 +192,8 @@ button.delete-btn {
     position: relative;
     overflow: hidden;
     padding: 0;
+    margin: 0 3px;
+    vertical-align: middle;
     transition: background-color 200ms, border-color 200ms; 
 }
 

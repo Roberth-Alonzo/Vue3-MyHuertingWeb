@@ -5,6 +5,11 @@ export default {
             videoSeleccionado: null,
             plantas: [
                 {
+                    nombre: "¿Qué Sembrar en Agosto?",
+                    video: "https://www.youtube.com/embed/watch?v=LJzkXWQADA4",
+                    descripcion: "Consejos sobre que plantas cultivar."
+                },
+                {
                     nombre: "Zanahoria",
                     video: "https://www.youtube.com/embed/b370Jpruc_0?start=5",
                     descripcion: "Guía paso a paso para cultivar zanahorias."
@@ -53,9 +58,54 @@ export default {
                     nombre: "Espinaca",
                     video: "https://www.youtube.com/embed/TW8hw4BDVNI",
                     descripcion: "Espinaca: cultivo y consejos prácticos."
+                },
+                {
+                    nombre: "Berenjena",
+                    video: "https://www.youtube.com/embed/m5uSMafN5RQ?start=14",
+                    descripcion: "Aprende cómo sembrar berenjenas."
+                },
+                {
+                    nombre: "Yuca",
+                    video: "https://www.youtube.com/embed/1FWS0HJLpBc",
+                    descripcion: "Guía práctica para cultivar yuca."
+                },
+                {
+                    nombre: "Camote",
+                    video: "https://www.youtube.com/embed/uq1zxHzlang",
+                    descripcion: "Cómo cultivar camote fácilmente."
+                },
+                {
+                    nombre: "Maíz",
+                    video: "https://www.youtube.com/embed/aEcg02JNyTM",
+                    descripcion: "Cultivo de maíz paso a paso."
+                },
+                {
+                    nombre: "Sandía",
+                    video: "https://www.youtube.com/embed/kURJxTdGbqc",
+                    descripcion: "Aprende cómo sembrar sandía."
+                },
+                {
+                    nombre: "Melón",
+                    video: "https://www.youtube.com/embed/N_F7WzND13w",
+                    descripcion: "Siembra, cuidados y cosecha de Melón."
+                },
+                {
+                    nombre: "Ajo",
+                    video: "https://www.youtube.com/embed/UDYz8PhOZGc",
+                    descripcion: "Aprende a sembrar y cosechar ajos."
+                },
+                {
+                    nombre: "Cebolla",
+                    video: "https://www.youtube.com/embed/EHRsRLzEHG0",
+                    descripcion: "Guía para plantar cebolla."
+                },
+                {
+                    nombre: "Guayaba",
+                    video: "https://www.youtube.com/embed/h6EZJbHxP1s?start=54",
+                    descripcion: "Técnicas para cultivar guayaba."
                 }
             ]
-        }
+        };
     },
     methods: {
         abrirVideo(planta) {
