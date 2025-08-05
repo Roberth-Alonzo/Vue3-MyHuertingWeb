@@ -474,7 +474,7 @@ export function useDashboard() {
         }
     };
 
-    // Computed actualizado para tareas de hoy con ordenamiento
+    // Computed para tareas de hoy con ordenamiento
     const tareasHoy = computed(() => {
         const hoy = obtenerFechaHoyString();
         console.log('📅 Fecha de hoy (dashboard):', hoy);
@@ -496,7 +496,7 @@ export function useDashboard() {
         return tareasOrdenadas;
     });
 
-    // Computed actualizado para próximas tareas con ordenamiento
+    // Computed para próximas tareas con ordenamiento
     const proximasTareas = computed(() => {
         const hoy = obtenerFechaHoyString();
         console.log('📅 Calculando próximas tareas desde:', hoy);
@@ -523,6 +523,33 @@ export function useDashboard() {
         console.log('📅 Próximas tareas ordenadas:', tareasOrdenadas.map(t => `${t.titulo} - ${t.fecha} ${t.hora}`));
         
         return tareasOrdenadas;
+    });
+
+    // Computed para cultivos ordenados por fecha de siembra
+    const cultivosOrdenados = computed(() => {
+        if (!cultivos.value || cultivos.value.length === 0) {
+            return [];
+        }
+
+        const cultivosCopia = [...cultivos.value];
+
+        return cultivosCopia.sort((a, b) => {
+            if (!a.fechaSiembra && !b.fechaSiembra) return 0;
+            if (!a.fechaSiembra) return 1;
+            if (!b.fechaSiembra) return -1;
+
+            const comparacion = compararFechasString(a.fechaSiembra, b.fechaSiembra);
+            
+            if (comparacion === 0 && a.hora && b.hora) {
+                const horaA = convertirHoraA24(a.hora);
+                const horaB = convertirHoraA24(b.hora);
+                
+                if (horaA < horaB) return -1;
+                if (horaA > horaB) return 1;
+            }
+            
+            return comparacion;
+        });
     });
 
     // Computed para obtener el total de usuarios registrados
@@ -560,6 +587,7 @@ export function useDashboard() {
         // Computed
         tareasHoy,
         proximasTareas,
+        cultivosOrdenados,
         totalUsuarios,
 
         // Métodos
