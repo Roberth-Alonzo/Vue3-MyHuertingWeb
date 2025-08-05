@@ -106,7 +106,11 @@
                 <!-- Próximas tareas -->
                 <section class="proximas-tareas-section">
                     <h2>⏰ Próximas Tareas</h2>
-                    <div class="proximas-tareas">
+                    <div v-if="proximasTareas.length === 0" class="no-tareas">
+                        <div class="info-icon">📅</div>
+                        <p>No hay próximas tareas programadas</p>
+                    </div>
+                    <div v-else class="proximas-tareas">
                         <div v-for="(tarea, index) in proximasTareas" :key="index" class="proxima-tarea">
                             <div class="fecha-badge">
                                 {{ formatearFecha(tarea.fecha) }}
@@ -114,7 +118,13 @@
                             <div class="tarea-info">
                                 <h4>{{ tarea.titulo }}</h4>
                                 <span class="tarea-hora">{{ tarea.hora }}</span>
+                                <p class="tarea-descripcion">{{ tarea.descripcion }}</p>
+                                <span class="tarea-miembro">👤 {{ tarea.miembro }}</span>
                             </div>
+                            <button class="tarea-complete" @click="completarProximaTarea(index)"
+                                title="Marcar como completada">
+                                ✓
+                            </button>
                         </div>
                     </div>
                 </section>
@@ -202,7 +212,7 @@ export default {
     name: 'Dashboard',
     setup() {
         const dashboardComposable = useDashboard()
-        
+
         // 🔄 Recargar datos cuando se vuelve al dashboard desde otra vista
         onActivated(() => {
             console.log('🔄 Dashboard reactivado - recargando datos...')

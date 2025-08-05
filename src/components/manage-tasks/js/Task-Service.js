@@ -49,6 +49,27 @@ function compararFechas(fecha1String, fecha2String) {
     return 0;
 }
 
+// NUEVA FUNCIÓN: Ordenar tareas por fecha y hora
+function ordenarTareasPorFechaYHora(tareas) {
+    return tareas.sort((a, b) => {
+        // Primero ordenar por fecha
+        const fechaComparacion = compararFechas(a.fecha, b.fecha);
+        
+        // Si las fechas son iguales, ordenar por hora
+        if (fechaComparacion === 0) {
+            // Convertir horas a formato comparable (HH:MM)
+            const horaA = a.hora || '00:00';
+            const horaB = b.hora || '00:00';
+            
+            if (horaA < horaB) return -1;
+            if (horaA > horaB) return 1;
+            return 0;
+        }
+        
+        return fechaComparacion;
+    });
+}
+
 // FUNCIÓN PARA FORMATEAR FECHA - Movida desde el componente Vue
 export function formatearFechaSafe(fecha) {
     if (!fecha) return ''
@@ -528,6 +549,9 @@ export function guardarTarea(e, navigationCallback) {
 
     let tareas = JSON.parse(localStorage.getItem("tareas")) || [];
     tareas.push(tarea);
+    
+    // Ordenar tareas después de agregar una nueva
+    tareas = ordenarTareasPorFechaYHora(tareas);
     localStorage.setItem("tareas", JSON.stringify(tareas));
 
     // Mostrar confirmación personalizada con opción de redirección
@@ -545,8 +569,6 @@ export function guardarTarea(e, navigationCallback) {
     
     return true;
 }
-
-// NUEVAS FUNCIONES PARA EDITAR TAREAS
 
 // Obtener tarea por índice
 export function obtenerTareaPorIndice(index) {
@@ -566,7 +588,7 @@ export function actualizarTarea(index, tareaActualizada, navigationCallback) {
     const descripcion = document.getElementById('descripcion').value.trim();
     const miembro = document.getElementById('miembro').value;
 
-    const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+    let tareas = JSON.parse(localStorage.getItem("tareas")) || [];
     
     if (index >= 0 && index < tareas.length) {
         // Mantener el estado actual si la fecha no cambió o actualizar según nueva fecha
@@ -583,6 +605,8 @@ export function actualizarTarea(index, tareaActualizada, navigationCallback) {
             estado: estadoNuevo
         };
 
+        // Ordenar tareas después de editar
+        tareas = ordenarTareasPorFechaYHora(tareas);
         localStorage.setItem("tareas", JSON.stringify(tareas));
 
         // Mostrar confirmación personalizada con opción de redirección
@@ -678,7 +702,7 @@ export function useProgramarTarea() {
     }
 }
 
-// NUEVO Composable para EditarTarea
+// Composable para EditarTarea
 export function useEditarTarea() {
     const router = useRouter()
     const usuarios = ref([])
@@ -742,7 +766,7 @@ export function useListaTareas() {
         return tarea.estado || "Pendiente"
     }
 
-    // Cargar tareas desde localStorage
+    // Cargar tareas ordenadas desde localStorage
     const cargarTareas = () => {
         try {
             const tareasData = localStorage.getItem('tareas')
@@ -750,10 +774,14 @@ export function useListaTareas() {
                 const tareasParseadas = JSON.parse(tareasData)
                 
                 // Sincronizar estados y verificar fechas vencidas
-                tareas.value = tareasParseadas.map(tarea => ({
+                let tareasConEstado = tareasParseadas.map(tarea => ({
                     ...tarea,
                     estado: determinarEstadoTarea(tarea)
                 }))
+                
+                // NUEVO: Ordenar las tareas por fecha y hora
+                tareasConEstado = ordenarTareasPorFechaYHora(tareasConEstado)
+                tareas.value = tareasConEstado
                 
                 // Guardar de vuelta para mantener sincronización
                 localStorage.setItem('tareas', JSON.stringify(tareas.value))
@@ -785,22 +813,25 @@ export function useListaTareas() {
         })
     }
 
-    // NUEVA FUNCIÓN: Ir a editar tarea
+    // Ir a editar tarea
     const irEditarTarea = (index) => {
         router.push(`/edit-task/${index}`)
     }
 
-    // Marcar tarea como realizada desde la lista
+    // Marcar tarea como realizada y mantener orden
     const marcarComoRealizada = (index) => {
         if (tareas.value[index]) {
             tareas.value[index].estado = "Realizada"
             tareas.value[index].completada = true
+            
+            // Reordenar después de cambiar estado
+            tareas.value = ordenarTareasPorFechaYHora([...tareas.value])
             localStorage.setItem('tareas', JSON.stringify(tareas.value))
             alert(`✅ ¡Tarea "${tareas.value[index].titulo}" marcada como realizada!`)
         }
     }
 
-    // Marcar tarea como pendiente
+    // Marcar tarea como pendiente y mantener orden
     const marcarComoPendiente = (index) => {
         if (tareas.value[index]) {
             // Solo permitir cambiar a pendiente si no está vencida
@@ -812,6 +843,9 @@ export function useListaTareas() {
             
             tareas.value[index].estado = "Pendiente"
             tareas.value[index].completada = false
+            
+            // Reordenar después de cambiar estado
+            tareas.value = ordenarTareasPorFechaYHora([...tareas.value])
             localStorage.setItem('tareas', JSON.stringify(tareas.value))
             alert(`🔄 Tarea "${tareas.value[index].titulo}" marcada como pendiente`)
         }
@@ -857,7 +891,7 @@ export function useListaTareas() {
     return {
         tareas,
         confirmarEliminacionTarea,
-        irEditarTarea, // NUEVA FUNCIÓN EXPORTADA
+        irEditarTarea, 
         marcarComoRealizada,
         marcarComoPendiente,
         irAgregarTarea,
@@ -885,9 +919,11 @@ export function initProgramarTarea() {
     };
 }
 
-// Inicializar componente ListaTareas
 export function initListaTareas() {
-    const tareas = obtenerTareas();
+    let tareas = obtenerTareas();
+    
+    // Ordenar las tareas obtenidas
+    tareas = ordenarTareasPorFechaYHora(tareas);
     
     setTimeout(() => {
         const botonesEliminar = document.querySelectorAll('.btn-eliminar');

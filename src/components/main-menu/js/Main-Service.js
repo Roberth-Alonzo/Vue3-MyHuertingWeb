@@ -25,11 +25,61 @@ export function useDashboard() {
     const calcularDiferenciaDias = (fechaString1, fechaString2) => {
         const [year1, month1, day1] = fechaString1.split('-').map(Number);
         const [year2, month2, day2] = fechaString2.split('-').map(Number);
-        
+
         const fecha1 = new Date(year1, month1 - 1, day1);
         const fecha2 = new Date(year2, month2 - 1, day2);
-        
+
         return Math.floor((fecha2 - fecha1) / (1000 * 60 * 60 * 24));
+    };
+
+    // Función para convertir hora a formato 24 horas para comparación
+    const convertirHoraA24 = (hora) => {
+        if (!hora) return '00:00';
+        
+        // Si ya está en formato 24 horas (HH:MM), retornar tal como está
+        if (hora.match(/^\d{2}:\d{2}$/)) {
+            return hora;
+        }
+        
+        // Si está en formato 12 horas (HH:MM AM/PM)
+        const match = hora.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+        if (match) {
+            let horas = parseInt(match[1]);
+            const minutos = match[2];
+            const ampm = match[3].toUpperCase();
+            
+            if (ampm === 'PM' && horas !== 12) {
+                horas += 12;
+            } else if (ampm === 'AM' && horas === 12) {
+                horas = 0;
+            }
+            
+            return `${horas.toString().padStart(2, '0')}:${minutos}`;
+        }
+        
+        // Si no coincide con ningún formato, retornar tal como está
+        return hora;
+    };
+
+    // Función auxiliar para ordenar tareas por fecha y hora
+    const ordenarTareasPorFechaYHora = (tareas) => {
+        return tareas.sort((a, b) => {
+            // Primero comparar por fecha
+            if (a.fecha < b.fecha) return -1;
+            if (a.fecha > b.fecha) return 1;
+            
+            // Si las fechas son iguales, comparar por hora
+            if (a.hora && b.hora) {
+                // Convertir hora a formato comparable (24 horas)
+                const horaA = convertirHoraA24(a.hora);
+                const horaB = convertirHoraA24(b.hora);
+                
+                if (horaA < horaB) return -1;
+                if (horaA > horaB) return 1;
+            }
+            
+            return 0;
+        });
     };
 
     // Cargar datos del localStorage
@@ -61,12 +111,12 @@ export function useDashboard() {
         try {
             const OWM_API_KEY = "399bb3c7a5b6f02b697d7a31da62f4f2"; // Tu API key de OpenWeatherMap
             const owmUrl = `https://api.openweathermap.org/data/2.5/weather?q=Manta,EC&appid=${OWM_API_KEY}&units=metric&lang=es`;
-            
+
             console.log('🌤️ Cargando clima desde OpenWeatherMap...');
-            
+
             const response = await fetch(owmUrl);
             const data = await response.json();
-            
+
             if (response.ok) {
                 clima.value = {
                     temperatura: Math.round(data.main.temp),
@@ -84,18 +134,18 @@ export function useDashboard() {
             }
         } catch (error) {
             console.error('❌ Error cargando clima de OpenWeatherMap:', error);
-            
+
             // Solo como último recurso usar datos simulados
             console.log('🔄 Usando datos simulados como respaldo...');
             setTimeout(() => {
                 const horaActual = new Date().getHours();
                 let temperaturaBase = 28; // Temperatura base para Manta
-                
+
                 // Ajustar por hora del día
                 if (horaActual >= 18 || horaActual <= 6) {
                     temperaturaBase -= 4; // Más fresco de noche
                 }
-                
+
                 clima.value = {
                     temperatura: temperaturaBase + Math.floor(Math.random() * 4) - 2, // ±2°C de variación
                     humedad: 70 + Math.floor(Math.random() * 20), // 70-90% (costa)
@@ -192,13 +242,13 @@ export function useDashboard() {
         }
     };
 
-    // 🔧 FUNCIÓN CORREGIDA - Calcular días desde siembra usando strings
+    // Calcular días desde siembra usando strings
     const calcularDias = (fechaSiembra) => {
         if (!fechaSiembra) return 0;
-        
+
         const fechaHoyString = obtenerFechaHoyString();
         const diferencia = calcularDiferenciaDias(fechaSiembra, fechaHoyString);
-        
+
         return Math.max(0, diferencia);
     };
 
@@ -229,11 +279,11 @@ export function useDashboard() {
 
     const formatearFecha = (fecha) => {
         if (!fecha) return '';
-        
+
         // Parsear la fecha manualmente para evitar problemas de zona horaria
         const [year, month, day] = fecha.split('-').map(Number);
         const date = new Date(year, month - 1, day);
-        
+
         return date.toLocaleDateString("es-ES", {
             month: "short",
             day: "numeric",
@@ -324,32 +374,74 @@ export function useDashboard() {
         modalContent.appendChild(texto);
         modalContent.appendChild(btnAceptar);
         modal.appendChild(modalContent);
-        
+
         document.body.appendChild(modal);
     };
 
+    // Función para completar tareas de hoy
     const completarTarea = (indexTareasHoy) => {
         // Encontrar la tarea real en el array completo de tareas
         const tareaHoy = tareasHoy.value[indexTareasHoy];
-        
+
         if (!tareaHoy) {
             console.error('Tarea no encontrada');
             return;
         }
-        
+
         // Buscar el índice real de la tarea en el array completo
-        const indiceReal = tareas.value.findIndex(tarea => 
-            tarea.titulo === tareaHoy.titulo && 
-            tarea.fecha === tareaHoy.fecha && 
+        const indiceReal = tareas.value.findIndex(tarea =>
+            tarea.titulo === tareaHoy.titulo &&
+            tarea.fecha === tareaHoy.fecha &&
             tarea.hora === tareaHoy.hora
         );
-        
+
         if (indiceReal === -1) {
             console.error('No se pudo encontrar la tarea en el array principal');
             return;
         }
 
         console.log(`Tarea completada: ${tareas.value[indiceReal]?.titulo}`);
+
+        const tituloTarea = tareas.value[indiceReal].titulo;
+
+        tareas.value[indiceReal].completada = true;     // Para el dashboard
+        tareas.value[indiceReal].estado = "Realizada";  // Para la lista de tareas
+
+        // Guardar en localStorage
+        localStorage.setItem("tareas", JSON.stringify(tareas.value));
+
+        mostrarModalTareaCompletada(tituloTarea);
+
+        console.log('✅ Tarea sincronizada:', {
+            titulo: tituloTarea,
+            completada: tareas.value[indiceReal].completada,
+            estado: tareas.value[indiceReal].estado
+        });
+    };
+
+    // Función para completar próximas tareas
+    const completarProximaTarea = (indexProximasTareas) => {
+        // Encontrar la tarea real en el array de próximas tareas
+        const proximaTarea = proximasTareas.value[indexProximasTareas];
+        
+        if (!proximaTarea) {
+            console.error('Próxima tarea no encontrada');
+            return;
+        }
+        
+        // Buscar el índice real de la tarea en el array completo
+        const indiceReal = tareas.value.findIndex(tarea => 
+            tarea.titulo === proximaTarea.titulo && 
+            tarea.fecha === proximaTarea.fecha && 
+            tarea.hora === proximaTarea.hora
+        );
+        
+        if (indiceReal === -1) {
+            console.error('No se pudo encontrar la próxima tarea en el array principal');
+            return;
+        }
+
+        console.log(`Próxima tarea completada: ${tareas.value[indiceReal]?.titulo}`);
         
         const tituloTarea = tareas.value[indiceReal].titulo;
         
@@ -361,7 +453,7 @@ export function useDashboard() {
         
         mostrarModalTareaCompletada(tituloTarea);
         
-        console.log('✅ Tarea sincronizada:', {
+        console.log('✅ Próxima tarea sincronizada:', {
             titulo: tituloTarea,
             completada: tareas.value[indiceReal].completada,
             estado: tareas.value[indiceReal].estado
@@ -382,46 +474,55 @@ export function useDashboard() {
         }
     };
 
+    // Computed actualizado para tareas de hoy con ordenamiento
     const tareasHoy = computed(() => {
         const hoy = obtenerFechaHoyString();
         console.log('📅 Fecha de hoy (dashboard):', hoy);
-        
+
         const tareasDeHoy = tareas.value.filter((tarea) => {
             const cumpleCondicion = tarea.fecha === hoy && !tarea.completada;
             if (cumpleCondicion) {
-                console.log(`✅ Tarea de hoy encontrada: ${tarea.titulo} - Fecha: ${tarea.fecha}`);
+                console.log(`✅ Tarea de hoy encontrada: ${tarea.titulo} - Fecha: ${tarea.fecha} - Hora: ${tarea.hora}`);
             }
             return cumpleCondicion;
         });
+
+        // Ordenar las tareas de hoy por hora
+        const tareasOrdenadas = ordenarTareasPorFechaYHora([...tareasDeHoy]);
         
-        console.log(`📊 Total tareas de hoy: ${tareasDeHoy.length}`);
-        return tareasDeHoy;
+        console.log(`📊 Total tareas de hoy: ${tareasOrdenadas.length}`);
+        console.log('🕐 Tareas de hoy ordenadas por hora:', tareasOrdenadas.map(t => `${t.titulo} - ${t.hora}`));
+        
+        return tareasOrdenadas;
     });
 
+    // Computed actualizado para próximas tareas con ordenamiento
     const proximasTareas = computed(() => {
         const hoy = obtenerFechaHoyString();
         console.log('📅 Calculando próximas tareas desde:', hoy);
-        
-        return tareas.value
+
+        const tareasProximas = tareas.value
             .filter((tarea) => {
                 if (!tarea.fecha || tarea.completada) return false;
-                
-                // 🔧 CAMBIO CRÍTICO: Solo tareas DESPUÉS de hoy (> 0, no >= 0)
+
                 const diferenciaDias = calcularDiferenciaDias(hoy, tarea.fecha);
-                const esProximaTarea = diferenciaDias > 0 && diferenciaDias <= 7;
-                
+                const esProximaTarea = diferenciaDias > 0 && diferenciaDias <= 20; // Próximos 20 días
+
                 if (esProximaTarea) {
-                    console.log(`📋 Próxima tarea: ${tarea.titulo} - Fecha: ${tarea.fecha} - Días desde hoy: ${diferenciaDias}`);
+                    console.log(`📋 Próxima tarea: ${tarea.titulo} - En ${diferenciaDias} días (${tarea.fecha}) - Hora: ${tarea.hora}`);
                 }
-                
+
                 return esProximaTarea;
-            })
-            .slice(0, 5)
-            .sort((a, b) => {
-                if (a.fecha < b.fecha) return -1;
-                if (a.fecha > b.fecha) return 1;
-                return 0;
             });
+
+        // Ordenar por fecha y hora (las más próximas primero)
+        const tareasOrdenadas = ordenarTareasPorFechaYHora([...tareasProximas])
+            .slice(0, 5); // Mostrar máximo 5 tareas
+
+        console.log(`📊 Total próximas tareas: ${tareasOrdenadas.length}`);
+        console.log('📅 Próximas tareas ordenadas:', tareasOrdenadas.map(t => `${t.titulo} - ${t.fecha} ${t.hora}`));
+        
+        return tareasOrdenadas;
     });
 
     // Computed para obtener el total de usuarios registrados
@@ -468,8 +569,16 @@ export function useDashboard() {
         getTextoEstado,
         formatearFecha,
         completarTarea,
+        completarProximaTarea,
         agregarUsuario,
         actualizarUsuario,
         inicializar,
+
+        ordenarTareasPorFechaYHora,
+        obtenerTodasLasTareasOrdenadas: () => ordenarTareasPorFechaYHora([...tareas.value]),
+        obtenerTareasPorEstadoOrdenadas: (estado) => {
+            const tareasFiltradas = tareas.value.filter(tarea => tarea.estado === estado);
+            return ordenarTareasPorFechaYHora([...tareasFiltradas]);
+        }
     };
 }

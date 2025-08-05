@@ -126,6 +126,15 @@ const plantas = [
     }
 ];
 
+// Función para ordenar cultivos por fecha
+function ordenarCultivosPorFecha(cultivos) {
+    return cultivos.sort((a, b) => {
+        if (a.fecha < b.fecha) return -1;
+        if (a.fecha > b.fecha) return 1;
+        return 0;
+    });
+}
+
 // Función para mostrar modal de confirmación personalizado
 function mostrarModalConfirmacion(mensaje, onAceptar, textoBotonPrincipal = 'Sí, ir a lista', textoPregunta = '¿Deseas ir a la lista de cultivos?') {
     // Crear el modal de confirmación
@@ -475,6 +484,7 @@ export function useRegistrarCultivos() {
 
         let cultivos = JSON.parse(localStorage.getItem('cultivos')) || []
         cultivos.push(cultivo)
+        cultivos = ordenarCultivosPorFecha(cultivos)
         localStorage.setItem('cultivos', JSON.stringify(cultivos))
 
         console.log('Cultivo guardado:', cultivo) // Para debug
@@ -626,7 +636,7 @@ export function useEditarCultivos() {
             valido = false
         }
 
-        // Validar observaciones (opcional)
+        // Validar observaciones 
         if (formData.observaciones !== '' && formData.observaciones.trim().length < 5) {
             errors.observaciones = 'Las observaciones deben tener al menos 5 caracteres si se escriben.'
             valido = false
@@ -654,6 +664,7 @@ export function useEditarCultivos() {
 
         let cultivos = JSON.parse(localStorage.getItem('cultivos')) || []
         cultivos[cultivoIndex.value] = cultivoActualizado
+        cultivos = ordenarCultivosPorFecha(cultivos)
         localStorage.setItem('cultivos', JSON.stringify(cultivos))
 
         console.log('Cultivo actualizado:', cultivoActualizado)
@@ -707,8 +718,10 @@ export function useVerCultivos() {
 
     // Función para cargar cultivos desde localStorage
     const cargarCultivos = () => {
-        const cultivosGuardados = JSON.parse(localStorage.getItem('cultivos')) || []
+        let cultivosGuardados = JSON.parse(localStorage.getItem('cultivos')) || []
+        cultivosGuardados = ordenarCultivosPorFecha(cultivosGuardados)
         cultivos.value = cultivosGuardados
+        localStorage.setItem('cultivos', JSON.stringify(cultivos.value))
     }
 
     // Función para editar un cultivo
@@ -768,10 +781,12 @@ export function useVerCultivos() {
 
 // Función utilitaria para obtener todos los cultivos
 export function obtenerCultivos() {
-    return JSON.parse(localStorage.getItem('cultivos')) || []
+    let cultivos = JSON.parse(localStorage.getItem('cultivos')) || []
+    return ordenarCultivosPorFecha(cultivos)
 }
 
 // Función utilitaria para guardar cultivos
 export function guardarCultivos(cultivos) {
-    localStorage.setItem('cultivos', JSON.stringify(cultivos))
+    const cultivosOrdenados = ordenarCultivosPorFecha([...cultivos])
+    localStorage.setItem('cultivos', JSON.stringify(cultivosOrdenados))
 }

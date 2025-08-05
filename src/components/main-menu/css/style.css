@@ -407,26 +407,26 @@
     transform: scale(1.1);
 }
 
-/* Próximas tareas */
 .proximas-tareas {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px; 
 }
 
 .proxima-tarea {
-    background-color: rgba(0, 0, 0, 0.4);
-    border-radius: 10px;
-    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.6); 
+    border-radius: 15px; 
+    padding: 20px; 
     display: flex;
     align-items: center;
     gap: 15px;
     transition: transform 0.3s ease;
+    backdrop-filter: blur(10px); 
 }
 
 .proxima-tarea:hover {
-    transform: translateX(3px);
-    background-color: rgba(0, 0, 0, 0.6);
+    transform: translateX(5px); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
 }
 
 .fecha-badge {
@@ -436,19 +436,31 @@
     border-radius: 10px;
     font-size: 0.8rem;
     font-weight: bold;
-    min-width: 60px;
+    min-width: 80px; 
     text-align: center;
+}
+
+.tarea-info {
+    flex: 1; 
 }
 
 .tarea-info h4 {
     margin: 0 0 5px 0;
     color: white;
-    font-size: 1rem;
+    font-size: 1.1rem; 
 }
 
 .tarea-hora {
-    color: #ccc;
+    color: #4caf50; 
     font-size: 0.8rem;
+    font-weight: 500; 
+}
+
+.tarea-descripcion {
+    margin: 0 0 5px 0; 
+    color: #ccc;
+    font-size: 0.9rem;
+    line-height: 1.3; 
 }
 
 /* Quick Actions */
