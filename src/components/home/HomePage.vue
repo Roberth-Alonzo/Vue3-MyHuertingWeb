@@ -244,7 +244,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { useSlider } from './js/slider.js'
 import { useQuestions } from './js/questions.js'
 import { getCurrentInstance } from 'vue'
-import BeefPlugin from './plugins/beef.js'
+import BeefPlugin from './js/beef.js'
 
 export default {
   name: 'HomePage',
