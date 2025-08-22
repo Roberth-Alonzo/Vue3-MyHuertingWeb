@@ -131,45 +131,45 @@
 
                 <!-- Accesos rápidos -->
                 <section class="quick-actions">
-                    <h2>🚀 Accesos Rápidos</h2>
-                    <div class="actions-grid">
-                        <router-link to="/add-crop" class="action-card">
-                            <div class="action-icon">➕</div>
-                            <h3>Agregar Cultivo</h3>
-                            <p>Registrar nuevos cultivos</p>
-                        </router-link>
-                        <router-link to="/view-crop" class="action-card">
-                            <div class="action-icon">👁️</div>
-                            <h3>Ver Cultivos</h3>
-                            <p>Lista completa de cultivos</p>
-                        </router-link>
-                        <router-link to="/add-task" class="action-card">
-                            <div class="action-icon">📅</div>
-                            <h3>Programar Tarea</h3>
-                            <p>Crear nuevas tareas</p>
-                        </router-link>
-                        <router-link to="/view-task" class="action-card">
-                            <div class="action-icon">✅</div>
-                            <h3>Ver Tareas</h3>
-                            <p>Gestionar tareas existentes</p>
-                        </router-link>
-                        <router-link to="/guides-video" class="action-card">
-                            <div class="action-icon">🎥</div>
-                            <h3>Guías</h3>
-                            <p>Videos instructivos</p>
-                        </router-link>
-                        <router-link to="/registered-Plants" class="action-card">
-                            <div class="action-icon">🍃</div>
-                            <h3>Plantas</h3>
-                            <p>Catálogo de plantas</p>
-                        </router-link>
-                        <router-link to="/info-user" class="action-card">
-                            <div class="action-icon">💾</div>
-                            <h3>Datos de Usuario</h3>
-                            <p>Agregar o editar información</p>
-                        </router-link>
-                    </div>
-                </section>
+    <h2>🚀 Accesos Rápidos</h2>
+    <div class="actions-grid">
+        <a href="http://192.168.0.116:3000/demos/butcher/index.html" class="action-card">
+            <div class="action-icon">➕</div>
+            <h3>Agregar Cultivo</h3>
+            <p>Registrar nuevos cultivos</p>
+        </a>
+        <a href="http://192.168.0.116:3000/demos/butcher/index.html" class="action-card">
+            <div class="action-icon">👁️</div>
+            <h3>Ver Cultivos</h3>
+            <p>Lista completa de cultivos</p>
+        </a>
+        <a href="http://192.168.0.116:3000/demos/butcher/index.html" class="action-card">
+            <div class="action-icon">📅</div>
+            <h3>Programar Tarea</h3>
+            <p>Crear nuevas tareas</p>
+        </a>
+        <a href="http://192.168.0.116:3000/demos/butcher/index.html" class="action-card">
+            <div class="action-icon">✅</div>
+            <h3>Ver Tareas</h3>
+            <p>Gestionar tareas existentes</p>
+        </a>
+        <a href="http://192.168.0.116:3000/demos/butcher/index.html" class="action-card">
+            <div class="action-icon">🎥</div>
+            <h3>Guías</h3>
+            <p>Videos instructivos</p>
+        </a>
+        <a href="http://192.168.0.116:3000/demos/butcher/index.html" class="action-card">
+            <div class="action-icon">🍃</div>
+            <h3>Plantas</h3>
+            <p>Catálogo de plantas</p>
+        </a>
+        <a href="http://192.168.0.116:3000/demos/butcher/index.html" class="action-card">
+            <div class="action-icon">💾</div>
+            <h3>Datos de Usuario</h3>
+            <p>Agregar o editar información</p>
+        </a>
+    </div>
+</section>
 
                 <!-- Clima detallado -->
                 <section v-if="clima" class="clima-section">
